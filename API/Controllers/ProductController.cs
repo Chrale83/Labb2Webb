@@ -33,7 +33,7 @@ namespace API.Controllers
                 CategoryId = productDto.CategoryId,
             };
 
-            var createdProduct = await _productService.CreateProductAsync(product);
+            await _productService.CreateProductAsync(product);
 
             return Ok(new { message = "Allt gick bra" });
 
