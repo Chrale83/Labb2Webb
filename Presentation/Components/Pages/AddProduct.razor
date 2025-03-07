@@ -1,0 +1,50 @@
+﻿@page "/addproduct"
+
+<h3>AddProduct</h3>
+
+<EditForm Model="Product" OnSubmit="OnSubmit" Enhance FormName="AddProduct">
+
+	<div class="row mb-3">
+		<label for="name" class="col-form-label col-md-3">Product Name:</label>
+		<div class="col-md-8">
+			<InputText id="name" class="form-control col-md-8" @bind-Value="@Product.Name" placeholder="Enter product name"></InputText>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label for="description" class="col-form-label col-md-3">Product description:</label>
+		<div class="col-md-8">
+			<InputText id="name" class="form-control col-md-8" @bind-Value="@Product.Description" placeholder="Enter product description"></InputText>
+		</div>
+	</div>
+
+	
+
+	<div class="row mb-3">
+		<label for="category" class="col-form-label col-md-3">Product Name:</label>
+		<div class="col-md-8">
+			<InputNumber id="name" class="form-control col-md-8" @bind-Value="@Product.Price" placeholder="Enter product price"></InputNumber>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label for="category" class="col-form-label col-md-3">Product Name:</label>
+		<div class="col-md-8">
+			<InputSelect id="name" class="form-control col-md-8" @bind-Value="@Category.Name" placeholder="Enter product price"></InputSelect>
+		</div>
+	</div>
+
+	<div class="row mb-3">
+		<label for="price" class="col-form-label col-md-3">Product Name:</label>
+		<div class="col-md-8">
+			<InputCheckbox id="name" class="form-control col-md-8" @bind-Value="@Product.Status" placeholder="Is in store"></InputCheckbox>
+		</div>
+	</div>
+
+	<div>
+		<button type="submit" class="btn btn-outline-primary ms-1">Submit</button>
+	</div>
+
+</EditForm>
+
+

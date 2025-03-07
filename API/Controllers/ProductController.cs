@@ -24,16 +24,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var product = new Product
-            {
-                Name = productDto.Name,
-                Description = productDto.Description,
-                Price = productDto.Price,
-                Status = productDto.Status,
-                CategoryId = productDto.CategoryId,
-            };
-
-            await _productService.CreateProductAsync(product);
+            await _productService.CreateProductAsync(productDto);
 
             return Ok(new { message = "Allt gick bra" });
 

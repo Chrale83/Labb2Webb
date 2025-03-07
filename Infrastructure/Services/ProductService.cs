@@ -1,5 +1,7 @@
-﻿using Domain.Entities;
+﻿using Domain.Dtos;
+using Domain.Entities;
 using Domain.Interfaces;
+using Infrastructure.Extensions;
 
 namespace Infrastructure.Services
 {
@@ -12,8 +14,10 @@ namespace Infrastructure.Services
             _productRepository = productRepository;
         }
 
-        public async Task<Product> CreateProductAsync(Product product)
+        public async Task<Product> CreateProductAsync(ProductDto productDto)
         {
+            var product = productDto.ProductDtoToEntity();
+
             return await _productRepository.CreateProductAsync(product);
         }
     }

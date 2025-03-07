@@ -1,9 +1,10 @@
-﻿using Domain.Entities;
+﻿using Domain.Dtos;
+using Domain.Entities;
 
 namespace Domain.Interfaces
 {
     public interface IProductService
     {
-        Task<Product> CreateProductAsync(Product product);
+        Task<Product> CreateProductAsync(ProductDto productDto);
     }
 }
