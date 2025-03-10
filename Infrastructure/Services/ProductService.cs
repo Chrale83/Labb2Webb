@@ -20,5 +20,10 @@ namespace Infrastructure.Services
 
             return await _productRepository.CreateProductAsync(product);
         }
+
+        public async Task<IEnumerable<ProductDto>> GetProductsAsync()
+        {
+            return (await _productRepository.GetProductsAsync()).ProductsToDto();
+        }
     }
 }

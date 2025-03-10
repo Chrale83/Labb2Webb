@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories
 {
@@ -19,6 +20,11 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
 
             return product;
+        }
+
+        public async Task<IEnumerable<Product>> GetProductsAsync()
+        {
+            return await _context.Products.ToListAsync();
         }
     }
 }
