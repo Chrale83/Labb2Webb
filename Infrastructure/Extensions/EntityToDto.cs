@@ -5,7 +5,9 @@ namespace Infrastructure.Extensions
 {
     public static class EntityToDto
     {
-        public static IEnumerable<CategoryDto> CategoryToDto(this IEnumerable<Category> categories)
+        public static IEnumerable<CategoryDto> CategoriesToDto(
+            this IEnumerable<Category> categories
+        )
         {
             var result = new List<CategoryDto>();
 
@@ -15,6 +17,27 @@ namespace Infrastructure.Extensions
             }
 
             return result;
+        }
+
+        public static IEnumerable<ProductDto> ProductsToDto(this IEnumerable<Product> products)
+        {
+            var newList = new List<ProductDto>();
+
+            foreach (var product in products)
+            {
+                newList.Add(
+                    new ProductDto
+                    {
+                        CategoryId = product.CategoryId,
+                        Description = product.Description,
+                        Name = product.Name,
+                        Price = product.Price,
+                        Status = product.Status,
+                    }
+                );
+            }
+
+            return newList;
         }
     }
 }

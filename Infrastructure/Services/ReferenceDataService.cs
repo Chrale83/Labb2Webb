@@ -15,7 +15,7 @@ namespace Infrastructure.Services
 
         public async Task<IEnumerable<CategoryDto>> GetCategoriesAsync()
         {
-            return (await _referenceDataRepository.GetCategoriesAsync()).CategoryToDto();
+            return (await _referenceDataRepository.GetCategoriesAsync()).CategoriesToDto();
         }
     }
 }

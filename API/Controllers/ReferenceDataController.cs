@@ -15,7 +15,7 @@ namespace API.Controllers
             _referenceDataService = referenceDataService;
         }
 
-        [HttpGet]
+        [HttpGet()]
         public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
         {
             var categories = await _referenceDataService.GetCategoriesAsync();

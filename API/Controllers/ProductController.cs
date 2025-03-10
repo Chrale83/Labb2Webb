@@ -29,5 +29,13 @@ namespace API.Controllers
 
             //return CreatedAtAction(nameof(GetProduct), new { id = createdProduct.Id }, createdProduct);
         }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
+        {
+            var products = await _productService.GetProductsAsync();
+
+            return Ok(products);
+        }
     }
 }
