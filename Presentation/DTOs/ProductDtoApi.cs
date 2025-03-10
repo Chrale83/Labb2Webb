@@ -9,10 +9,11 @@ namespace Presentation.DTOs
         [Display(Name = "Product Name")]
         public string Name { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required to enter")]
         public string Description { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Required to enter")]
+        [Range(1, int.MaxValue, ErrorMessage = "Price need to be higher than zero")]
         public decimal Price { get; set; }
 
         [Required]

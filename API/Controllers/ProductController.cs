@@ -1,5 +1,4 @@
 ﻿using Domain.Dtos;
-using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +16,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateProduct([FromBody] ProductDto productDto)
+        public async Task<IActionResult> CreateProduct(ProductDto productDto)
         {
             if (!ModelState.IsValid)
             {

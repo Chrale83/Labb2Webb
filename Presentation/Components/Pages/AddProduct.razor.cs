@@ -9,15 +9,35 @@ namespace Presentation.Components.Pages
         public HttpClient? Http { get; set; }
 
         [SupplyParameterFromForm]
-        public ProductDtoApi Product { get; set; }
-        public CategoryDtoApi Category { get; set; }
+        public ProductDtoApi? Product { get; set; }
 
-        protected override void OnInitialized()
+        public List<CategoryDtoApi> Categories { get; set; } = new();
+
+        protected string message = string.Empty;
+        protected string statusClass = string.Empty;
+        protected bool ProductSaved = false;
+
+        protected override async Task OnInitializedAsync()
         {
+            ProductSaved = false;
             Product ??= new();
-            Category ??= new();
+
+            Categories = await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories");
         }
 
-        private async Task OnSubmit() { }
+        private void HandleInvalidSubmit()
+        {
+            statusClass = "alert-danger";
+            message = "Check your forms";
+            StateHasChanged();
+        }
+
+        private async Task HandleValidSubmit()
+        {
+            var response = await Http.PostAsJsonAsync("api/products", Product);
+            statusClass = "alert-success";
+            message = "Product added to database";
+            ProductSaved = true;
+        }
     }
 }

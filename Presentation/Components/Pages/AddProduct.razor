@@ -1,43 +1,66 @@
-﻿@page "/addproduct"
+﻿@rendermode InteractiveServer
+@page "/addproduct"
 
-<h3>AddProduct</h3>
+@if (!ProductSaved)
+{
+	
 
-<EditForm Model="Product" OnSubmit="OnSubmit" Enhance FormName="AddProduct">
+
+<h3>Add Product</h3>
+
+<EditForm Model="Product"
+		  OnInvalidSubmit="@HandleInvalidSubmit"
+	OnValidSubmit="@HandleValidSubmit"
+	 
+	Enhance
+	method="post"
+	FormName="AddProduct">
+
+	<DataAnnotationsValidator />
+	<ValidationSummary></ValidationSummary>
 
 	<div class="row mb-3">
 		<label for="name" class="col-form-label col-md-3">Product Name:</label>
 		<div class="col-md-8">
-			<InputText id="name" class="form-control col-md-8" @bind-Value="@Product.Name" placeholder="Enter product name"></InputText>
+			<InputText id="productName" class="form-control col-md-8" @bind-Value="@Product.Name" placeholder="Enter product name"></InputText>
 		</div>
+		<ValidationMessage class="offset-md-3" For="@(() => Product.Name)" />
 	</div>
 
 	<div class="row mb-3">
 		<label for="description" class="col-form-label col-md-3">Product description:</label>
 		<div class="col-md-8">
-			<InputText id="name" class="form-control col-md-8" @bind-Value="@Product.Description" placeholder="Enter product description"></InputText>
+			<InputText id="productDescription" class="form-control col-md-8" @bind-Value="@Product.Description" placeholder="Enter product description"></InputText>
 		</div>
+		<ValidationMessage class="offset-md-3" For="@(() => Product.Description)" />
 	</div>
 
 	
 
 	<div class="row mb-3">
-		<label for="category" class="col-form-label col-md-3">Product Name:</label>
+		<label for="category" class="col-form-label col-md-3">Product price:</label>
 		<div class="col-md-8">
-			<InputNumber id="name" class="form-control col-md-8" @bind-Value="@Product.Price" placeholder="Enter product price"></InputNumber>
+			<InputNumber id="productPrice" class="form-control col-md-8" min="0" @bind-Value="@Product.Price"></InputNumber>
+		</div>
+		<ValidationMessage class="offset-md-3" For="@(() => Product.Price)" />
+	</div>
+
+	<div class="row mb-3">
+		<label for="category" class="col-form-label col-md-3">Product Category:</label>
+		<div class="col-md-8">
+			<InputSelect id="productCategories" class="form-control col-md-8" @bind-Value="@Product.CategoryId" placeholder="Enter product price">
+				@foreach (var category in Categories)
+				{
+					<option value="@category.Id">@category.Name</option>
+				}
+			</InputSelect>
 		</div>
 	</div>
 
 	<div class="row mb-3">
-		<label for="category" class="col-form-label col-md-3">Product Name:</label>
+		<label for="price" class="col-form-label col-md-3">Product in stock:</label>
 		<div class="col-md-8">
-			<InputSelect id="name" class="form-control col-md-8" @bind-Value="@Category.Name" placeholder="Enter product price"></InputSelect>
-		</div>
-	</div>
-
-	<div class="row mb-3">
-		<label for="price" class="col-form-label col-md-3">Product Name:</label>
-		<div class="col-md-8">
-			<InputCheckbox id="name" class="form-control col-md-8" @bind-Value="@Product.Status" placeholder="Is in store"></InputCheckbox>
+			<InputCheckbox id="productStatus" @bind-Value="@Product.Status"></InputCheckbox><span class="ms-2">If in stock checked</span>
 		</div>
 	</div>
 
@@ -46,5 +69,15 @@
 	</div>
 
 </EditForm>
+<div>
+	<label class="mt-2 alert @statusClass">@message</label>
+	</div>
 
+}
+else
+{
+	<div>
+		<label class="mt-2 alert @statusClass">@message</label>
+	</div>
+}
 
