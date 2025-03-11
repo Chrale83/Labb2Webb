@@ -28,6 +28,7 @@ namespace Infrastructure.Extensions
                 newList.Add(
                     new ProductDto
                     {
+                        Id = product.Id,
                         CategoryId = product.CategoryId,
                         Description = product.Description,
                         Name = product.Name,

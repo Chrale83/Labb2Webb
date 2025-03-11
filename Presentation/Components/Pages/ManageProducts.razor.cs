@@ -1,6 +1,7 @@
-﻿using BlazorBootstrap;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Presentation.DTOs;
+using static MudBlazor.CategoryTypes;
 
 namespace Presentation.Components.Pages
 {
@@ -10,30 +11,48 @@ namespace Presentation.Components.Pages
         private HttpClient Http { get; set; } = default!;
 
         private IEnumerable<ProductFrontDto> Products { get; set; } = new List<ProductFrontDto>();
-        public List<CategoryDtoApi> Categories { get; set; } = new();
+        public IEnumerable<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
+        private ProductFrontDto? selectedProduct;
+
+        private void OnRowClick(TableRowClickEventArgs<ProductFrontDto> args)
+        {
+            selectedProduct = args.Item;
+        }
 
         protected override async Task OnInitializedAsync()
         {
-            Categories = await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories");
-        }
-
-        //try
-        //{
-        //    Products =
-        //        await Http.GetFromJsonAsync<List<ProductDtoApi>>("/api/products") ?? new();
-        //}
-        //catch (Exception ex)
-        //{
-        //    Console.Error.WriteLine($"Fel vid hämtning av produktlista: {ex.Message}");
-        //}
-
-
-        private async Task<GridDataProviderResult<ProductFrontDto>> ProductsDataGridProvider(
-            GridDataProviderRequest<ProductFrontDto> request
-        )
-        {
+            Categories =
+                await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories") ?? new();
             Products = await Http.GetFromJsonAsync<List<ProductFrontDto>>("/api/products") ?? new();
-            return await Task.FromResult(request.ApplyTo(Products ?? new List<ProductFrontDto>()));
         }
+
+        private int selectedRowNumber = -1;
+        private MudTable<ProductFrontDto> mudTable;
+        private List<string> clickedEvents = new();
+
+        private void RowClickEvent(TableRowClickEventArgs<ProductFrontDto> tableRowClickEventArgs)
+        {
+            clickedEvents.Add("Row has been clicked");
+        }
+
+        //private string SelectedRowClassFunc(ProductFrontDto product, int rowNumber)
+        //{
+        //    if (selectedRowNumber == rowNumber)
+        //    {
+        //        selectedRowNumber = -1;
+        //        clickedEvents.Add("Selected Row: None");
+        //        return string.Empty;
+        //    }
+        //    else if (mudTable.SelectedItem != null && mudTable.SelectedItem.Equals(product))
+        //    {
+        //        selectedRowNumber = rowNumber;
+        //        clickedEvents.Add($"Selected Row: {rowNumber}");
+        //        return "selected";
+        //    }
+        //    else
+        //    {
+        //        return string.Empty;
+        //    }
+        //}
     }
 }

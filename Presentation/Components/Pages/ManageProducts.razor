@@ -1,44 +1,70 @@
 ﻿@page "/manageproducts"
-@using BlazorBootstrap
 @using DTOs
 @rendermode InteractiveServer
-@attribute [StreamRendering]
+@using System.Net.Http.Json
+@using MudBlazor
 
-<Grid TItem="ProductFrontDto"
-Class="table table-hover table-bordered table-striped"
-DataProvider="ProductsDataGridProvider"
-AllowPaging="true"
-PageSize="5"
-Responsive="true">
 
-    <GridColumns>
-        <GridColumn TItem="ProductFrontDto" HeaderText="Name">
-            @context.Name
-        </GridColumn>
-        <GridColumn TItem="ProductFrontDto" HeaderText="Description">
-            @context.Description
-        </GridColumn>
-        <GridColumn TItem="ProductFrontDto" HeaderText="Price">
-            @context.Price <span>Kr</span>
-        </GridColumn>
-        <GridColumn TItem="ProductFrontDto" HeaderText="Category">
-           
-            @Categories.Where(c => c.Id == context.CategoryId).Select(c => c.Name).FirstOrDefault().ToString()
-        </GridColumn>
-        <GridColumn TItem="ProductFrontDto" HeaderText="Status">
+<MudTable 
+    T="ProductFrontDto" 
+    Items="@Products.Take(10)" 
+    Hover="true" 
+    Breakpoint="Breakpoint.Sm" 
+    @ref="mudTable"
+    RowClass="cursor-pointer" 
+    @bind-SelectedItem="selectedProduct">
+      
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Price</MudTh>
+        <MudTh>Category</MudTh>
+        <MudTh>In stock</MudTh>
 
-            @if (context.Status == true)
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Price">@context.Price kr</MudTd>
+        <MudTd DataLabel="Category">
+            @Categories.Where(c => c.Id == context.CategoryId).Select(c => c.Name).FirstOrDefault()</MudTd>
+        <MudTd DataLabel="Status">@if (context.Status)
             {
-                <span>I lager</span>
+                <span>In stock</span>
             }
             else {
-                <span>Ej i lager</span>
+                <span>Not in stock</span>
             }
-            
-        </GridColumn>
-    </GridColumns>
+        </MudTd>
+        
+    </RowTemplate>
+</MudTable>
+@if (selectedProduct != null)
+{
+<div class="mt-3">
 
-</Grid>
+<MudButton Variant="Variant.Outlined"  Color="Color.Primary">Edit product</MudButton>
+<MudButton Variant="Variant.Outlined" Class="ms-3" Color="Color.Secondary">Delete product</MudButton>
+
+</div>
+}
+    
+
+
+@if (selectedProduct != null)
+{
+    <p>Vald produkt: <strong>@selectedProduct.Name</strong></p>
+}
+else {
+    <p>Laddar...</p>
+}
+
+
+
+
+
+
+
+
+
 
 
 

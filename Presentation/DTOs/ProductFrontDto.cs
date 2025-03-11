@@ -4,6 +4,8 @@ namespace Presentation.DTOs
 {
     public class ProductFrontDto
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Required to enter")]
         [MaxLength(50, ErrorMessage = "Max 50 letters")]
         [Display(Name = "Product Name")]
