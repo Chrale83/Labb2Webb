@@ -9,7 +9,7 @@ namespace Presentation.Components.Pages
         public HttpClient? Http { get; set; }
 
         [SupplyParameterFromForm]
-        public ProductDtoApi? Product { get; set; }
+        public ProductFrontDto? Product { get; set; }
 
         public List<CategoryDtoApi> Categories { get; set; } = new();
 
@@ -20,7 +20,7 @@ namespace Presentation.Components.Pages
         protected override async Task OnInitializedAsync()
         {
             ProductSaved = false;
-            Product ??= new();
+            Product ??= new() { CategoryId = 1 };
 
             Categories = await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories");
         }
