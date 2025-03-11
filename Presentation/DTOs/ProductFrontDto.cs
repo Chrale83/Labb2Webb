@@ -2,7 +2,7 @@
 
 namespace Presentation.DTOs
 {
-    public class ProductDtoApi
+    public class ProductFrontDto
     {
         [Required(ErrorMessage = "Required to enter")]
         [MaxLength(50, ErrorMessage = "Max 50 letters")]

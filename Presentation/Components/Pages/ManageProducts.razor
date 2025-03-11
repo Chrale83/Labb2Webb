@@ -1,8 +1,46 @@
-﻿@using Microsoft.AspNetCore.Components.QuickGrid
+﻿@page "/manageproducts"
+@using BlazorBootstrap
+@using DTOs
 @rendermode InteractiveServer
-@page "/manageproducts"
+@attribute [StreamRendering]
 
-<h3>ManageProducts</h3>
+<Grid TItem="ProductFrontDto"
+Class="table table-hover table-bordered table-striped"
+DataProvider="ProductsDataGridProvider"
+AllowPaging="true"
+PageSize="5"
+Responsive="true">
+
+    <GridColumns>
+        <GridColumn TItem="ProductFrontDto" HeaderText="Name">
+            @context.Name
+        </GridColumn>
+        <GridColumn TItem="ProductFrontDto" HeaderText="Description">
+            @context.Description
+        </GridColumn>
+        <GridColumn TItem="ProductFrontDto" HeaderText="Price">
+            @context.Price <span>Kr</span>
+        </GridColumn>
+        <GridColumn TItem="ProductFrontDto" HeaderText="Category">
+           
+            @Categories.Where(c => c.Id == context.CategoryId).Select(c => c.Name).FirstOrDefault().ToString()
+        </GridColumn>
+        <GridColumn TItem="ProductFrontDto" HeaderText="Status">
+
+            @if (context.Status == true)
+            {
+                <span>I lager</span>
+            }
+            else {
+                <span>Ej i lager</span>
+            }
+            
+        </GridColumn>
+    </GridColumns>
+
+</Grid>
+
+
 
 
 
