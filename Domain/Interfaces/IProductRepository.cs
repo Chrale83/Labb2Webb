@@ -7,5 +7,7 @@ namespace Domain.Interfaces
         Task<Product> CreateProductAsync(Product product);
 
         Task<IEnumerable<Product>> GetProductsAsync();
+
+        Task DeleteProductAsync(int id);
     }
 }
