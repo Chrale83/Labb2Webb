@@ -8,6 +8,6 @@ namespace Domain.Interfaces
         Task<Product> CreateProductAsync(ProductDto productDto);
         Task<IEnumerable<ProductDto>> GetProductsAsync();
 
-        Task DeleteProductAsync(int id);
+        Task<bool> DeleteProductAsync(int id);
     }
 }

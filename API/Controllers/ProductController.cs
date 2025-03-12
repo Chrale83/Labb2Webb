@@ -23,11 +23,9 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            await _productService.CreateProductAsync(productDto);
+            var result = await _productService.CreateProductAsync(productDto);
 
-            return Ok(new { message = "Allt gick bra" });
-
-            //return CreatedAtAction(nameof(GetProduct), new { id = createdProduct.Id }, createdProduct);
+            return Created();
         }
 
         [HttpGet]
@@ -36,6 +34,21 @@ namespace API.Controllers
             var products = await _productService.GetProductsAsync();
 
             return Ok(products);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteProduct(int id)
+        {
+            var result = await _productService.DeleteProductAsync(id);
+            if (result == true)
+            {
+                return Ok();
+            }
+            else
+            {
+                return NotFound();
+            }
         }
     }
 }
