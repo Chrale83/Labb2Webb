@@ -7,10 +7,10 @@
 
 @if (SelectedProduct != null)
 {
-    <div class="mb-3">
+    <div class="mb-3 ms-1">
         <MudButton Variant="Variant.Outlined" Color="Color.Primary">Edit product</MudButton>
         <MudButton Variant="Variant.Outlined" Class="ms-3" @onclick="OpenConfirmDialogDelete" Color="Color.Secondary">Delete product</MudButton>
-        <MudText Typo="Typo.h5" class="mt-2 ms-1">Vald produkt: <strong>@SelectedProduct.Name</strong></MudText>
+        <MudText Typo="Typo.h5" class="mt-2">Vald produkt: <strong>@SelectedProduct.Name</strong></MudText>
 
     </div>
 }
