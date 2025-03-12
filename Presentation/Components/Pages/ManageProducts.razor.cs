@@ -14,10 +14,10 @@ namespace Presentation.Components.Pages
         public IEnumerable<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
         private ProductFrontDto? selectedProduct;
 
-        private void OnRowClick(TableRowClickEventArgs<ProductFrontDto> args)
-        {
-            selectedProduct = args.Item;
-        }
+        //private void OnRowClick(TableRowClickEventArgs<ProductFrontDto> args)
+        //{
+        //    selectedProduct = args.Item;
+        //}
 
         protected override async Task OnInitializedAsync()
         {
@@ -26,33 +26,8 @@ namespace Presentation.Components.Pages
             Products = await Http.GetFromJsonAsync<List<ProductFrontDto>>("/api/products") ?? new();
         }
 
-        private int selectedRowNumber = -1;
+        //private int selectedRowNumber = -1;
         private MudTable<ProductFrontDto> mudTable;
-        private List<string> clickedEvents = new();
-
-        private void RowClickEvent(TableRowClickEventArgs<ProductFrontDto> tableRowClickEventArgs)
-        {
-            clickedEvents.Add("Row has been clicked");
-        }
-
-        //private string SelectedRowClassFunc(ProductFrontDto product, int rowNumber)
-        //{
-        //    if (selectedRowNumber == rowNumber)
-        //    {
-        //        selectedRowNumber = -1;
-        //        clickedEvents.Add("Selected Row: None");
-        //        return string.Empty;
-        //    }
-        //    else if (mudTable.SelectedItem != null && mudTable.SelectedItem.Equals(product))
-        //    {
-        //        selectedRowNumber = rowNumber;
-        //        clickedEvents.Add($"Selected Row: {rowNumber}");
-        //        return "selected";
-        //    }
-        //    else
-        //    {
-        //        return string.Empty;
-        //    }
-        //}
+        //private List<string> clickedEvents = new();
     }
 }
