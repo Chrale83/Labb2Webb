@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Presentation.Components.Dialogs;
 using Presentation.DTOs;
-using static MudBlazor.CategoryTypes;
 
 namespace Presentation.Components.Pages
 {
@@ -10,6 +10,7 @@ namespace Presentation.Components.Pages
         [Inject]
         private HttpClient Http { get; set; } = default!;
 
+        private MudTable<ProductFrontDto>? mudTable;
         private IEnumerable<ProductFrontDto> Products { get; set; } = new List<ProductFrontDto>();
         public IEnumerable<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
         private ProductFrontDto? selectedProduct;
@@ -26,8 +27,24 @@ namespace Presentation.Components.Pages
             Products = await Http.GetFromJsonAsync<List<ProductFrontDto>>("/api/products") ?? new();
         }
 
+        private async Task DeleteProduct()
+        {
+            if (selectedProduct != null)
+            {
+                var response = await Http.DeleteAsync($"api/products/{selectedProduct.Id}");
+                if (response.IsSuccessStatusCode) { }
+                else { }
+            }
+        }
+
+        private Task OpenDialogAsync()
+        {
+            var options = new DialogOptions { CloseOnEscapeKey = true };
+
+            return DialogService.ShowAsync<ConfirmDeleteProductDialog>("Simple Dialog", options);
+        }
+
         //private int selectedRowNumber = -1;
-        private MudTable<ProductFrontDto> mudTable;
         //private List<string> clickedEvents = new();
     }
 }

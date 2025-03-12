@@ -3,6 +3,8 @@
 @rendermode InteractiveServer
 @using System.Net.Http.Json
 @using MudBlazor
+@inject IDialogService DialogService
+
 
 
 <MudTable 
@@ -37,12 +39,16 @@
         
     </RowTemplate>
 </MudTable>
+        <MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary">
+            Open Simple Dialog
+        </MudButton>
 @if (selectedProduct != null)
 {
 <div class="mt-3">
 
 <MudButton Variant="Variant.Outlined"  Color="Color.Primary">Edit product</MudButton>
-<MudButton Variant="Variant.Outlined" Class="ms-3" Color="Color.Secondary">Delete product</MudButton>
+<MudButton Variant="Variant.Outlined" Class="ms-3"  Color="Color.Secondary">Delete product</MudButton>
+
 
 </div>
 }
