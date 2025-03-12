@@ -5,6 +5,18 @@
 @using MudBlazor
 @inject IDialogService DialogService
 
+@if (Products.Count() == 0)
+{
+    <MudContainer>
+        <MudGrid Justify="Justify.Center">
+            <MudItem xs="12" class="text-center">
+                <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+            </MudItem>
+        </MudGrid>
+    </MudContainer>
+    
+}
+
 @if (SelectedProduct != null)
 {
     <div class="mb-3 ms-1">
