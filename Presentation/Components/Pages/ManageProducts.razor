@@ -5,7 +5,15 @@
 @using MudBlazor
 @inject IDialogService DialogService
 
+@if (SelectedProduct != null)
+{
+    <div class="mb-3">
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary">Edit product</MudButton>
+        <MudButton Variant="Variant.Outlined" Class="ms-3" @onclick="OpenConfirmDialogDelete" Color="Color.Secondary">Delete product</MudButton>
+        <MudText Typo="Typo.h5" class="mt-2 ms-1">Vald produkt: <strong>@SelectedProduct.Name</strong></MudText>
 
+    </div>
+}
 
 <MudTable 
     T="ProductFrontDto" 
@@ -14,7 +22,7 @@
     Breakpoint="Breakpoint.Sm" 
     @ref="mudTable"
     RowClass="cursor-pointer" 
-    @bind-SelectedItem="selectedProduct">
+    @bind-SelectedItem="SelectedProduct">
       
     <HeaderContent>
         <MudTh>Name</MudTh>
@@ -39,29 +47,13 @@
         
     </RowTemplate>
 </MudTable>
-        <MudButton @onclick="OpenDialogAsync" Variant="Variant.Filled" Color="Color.Primary">
-            Open Simple Dialog
-        </MudButton>
-@if (selectedProduct != null)
-{
-<div class="mt-3">
-
-<MudButton Variant="Variant.Outlined"  Color="Color.Primary">Edit product</MudButton>
-<MudButton Variant="Variant.Outlined" Class="ms-3"  Color="Color.Secondary">Delete product</MudButton>
+        
 
 
-</div>
-}
     
 
 
-@if (selectedProduct != null)
-{
-    <p>Vald produkt: <strong>@selectedProduct.Name</strong></p>
-}
-else {
-    <p>Laddar...</p>
-}
+
 
 
 

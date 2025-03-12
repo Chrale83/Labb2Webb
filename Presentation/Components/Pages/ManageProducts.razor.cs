@@ -13,12 +13,9 @@ namespace Presentation.Components.Pages
         private MudTable<ProductFrontDto>? mudTable;
         private IEnumerable<ProductFrontDto> Products { get; set; } = new List<ProductFrontDto>();
         public IEnumerable<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
-        private ProductFrontDto? selectedProduct;
 
-        //private void OnRowClick(TableRowClickEventArgs<ProductFrontDto> args)
-        //{
-        //    selectedProduct = args.Item;
-        //}
+        [Parameter]
+        public ProductFrontDto? SelectedProduct { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -29,22 +26,34 @@ namespace Presentation.Components.Pages
 
         private async Task DeleteProduct()
         {
-            if (selectedProduct != null)
+            if (SelectedProduct != null)
             {
-                var response = await Http.DeleteAsync($"api/products/{selectedProduct.Id}");
+                var response = await Http.DeleteAsync($"api/products/{SelectedProduct.Id}");
                 if (response.IsSuccessStatusCode) { }
                 else { }
             }
         }
 
-        private Task OpenDialogAsync()
+        private async Task OpenConfirmDialogDelete()
         {
+            var parameters = new DialogParameters { ["ProductName"] = SelectedProduct.Name };
+
             var options = new DialogOptions { CloseOnEscapeKey = true };
 
-            return DialogService.ShowAsync<ConfirmDeleteProductDialog>("Simple Dialog", options);
-        }
+            var response = await this.DialogService.ShowAsync<ConfirmDeleteProductDialog>(
+                "Simple Dialog",
+                parameters,
+                options
+            );
 
-        //private int selectedRowNumber = -1;
-        //private List<string> clickedEvents = new();
+            var result = await response.Result;
+
+            if (!result.Canceled)
+            {
+                await DeleteProduct();
+                Products = await Http.GetFromJsonAsync<List<ProductFrontDto>>("/api/products");
+                SelectedProduct = null;
+            }
+        }
     }
 }
