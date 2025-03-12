@@ -22,17 +22,18 @@ namespace Infrastructure.Repositories
             return product;
         }
 
-        public async Task DeleteProductAsync(int id)
+        public async Task<bool> DeleteProductAsync(int id)
         {
             var product = await _context.Products.FindAsync(id);
 
             if (product == null)
             {
-                throw new KeyNotFoundException($"Product with ID {id} was not found found");
+                return false;
             }
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
+            return true;
         }
 
         public async Task<IEnumerable<Product>> GetProductsAsync()

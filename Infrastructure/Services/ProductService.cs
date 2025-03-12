@@ -7,23 +7,28 @@ namespace Infrastructure.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IProductRepository _productRepository;
+        private readonly IRepository<Product> repository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IRepository<Product> repository)
         {
-            _productRepository = productRepository;
+            this.repository = repository;
         }
 
         public async Task<Product> CreateProductAsync(ProductDto productDto)
         {
             var product = productDto.ProductDtoToEntity();
 
-            return await _productRepository.CreateProductAsync(product);
+            return await repository.AddAsync(product);
+        }
+
+        public async Task<bool> DeleteProductAsync(int id)
+        {
+            return await repository.DeleteAsync(id);
         }
 
         public async Task<IEnumerable<ProductDto>> GetProductsAsync()
         {
-            return (await _productRepository.GetProductsAsync()).ProductsToDto();
+            return (await repository.GetAllAsync()).ProductsToDto();
         }
     }
 }
