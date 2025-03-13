@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
+using Presentation.States;
 
 namespace Presentation.Components.Pages
 {
@@ -11,6 +12,9 @@ namespace Presentation.Components.Pages
         [SupplyParameterFromForm]
         public ProductFrontDto? Product { get; set; }
 
+        [Inject]
+        public AppState? appState { get; set; }
+
         public List<CategoryDtoApi> Categories { get; set; } = new();
 
         protected string message = string.Empty;
@@ -21,8 +25,8 @@ namespace Presentation.Components.Pages
         {
             ProductSaved = false;
             Product ??= new() { CategoryId = 1 };
-
-            Categories = await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories");
+            Categories = appState.Categories;
+            //Categories = await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories");
         }
 
         private void HandleInvalidSubmit()
