@@ -21,9 +21,9 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    var appState = services.GetRequiredService<AppState>();
-    var httpClient = services.GetRequiredService<HttpClient>();
+    var services = scope.ServiceProvider; //    scope.ServiceProvider används för att hämta tjänster inom det nya scopet.
+    var appState = services.GetRequiredService<AppState>(); //services.GetRequiredService<AppState>() hämtar AppState-instansen från DI.
+    var httpClient = services.GetRequiredService<HttpClient>(); //services.GetRequiredService<HttpClient>() hämtar HttpClient från DI.
 
     try
     {
