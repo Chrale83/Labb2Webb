@@ -3,7 +3,7 @@
 
 <h3>Edit Product</h3>
 
-<EditForm Model="EditingProduct" 
+<EditForm Model="SelectedProduct" 
 	
 Enhance
 method="put"
@@ -16,24 +16,24 @@ OnValidSubmit="@HandleValidSubmit">
 <div class="row mb-3">
 	<label for="name" class="col-form-label col-md-3">Name:</label>
 		<div class="col-md-8">
-			<InputText id="productName" class="form-control col-md-8" @bind-Value="@EditingProduct.Name" placeholder="Enter product name"/>
+			<InputText id="productName" class="form-control col-md-8" @bind-Value="@SelectedProduct.Name" placeholder="Enter product name"/>
 		</div>
-		<ValidationMessage class="offset-md-3" For="@( () => EditingProduct.Name)" />
+		<ValidationMessage class="offset-md-3" For="@( () => SelectedProduct.Name)" />
 </div>
 
 
 	<div class="row mb-3">
 		<label for="price" class="col-form-label col-md-3">Price:</label>
 		<div class="col-md-8">
-			<InputNumber id="price" class="form-control col-md-8" min="0" @bind-Value="@EditingProduct.Price"></InputNumber>
+			<InputNumber id="price" class="form-control col-md-8" min="0" @bind-Value="@SelectedProduct.Price"></InputNumber>
 		</div>
-		<ValidationMessage class="offset-md-3" For="@(() => EditingProduct.Price)" />
+		<ValidationMessage class="offset-md-3" For="@(() => SelectedProduct.Price)" />
 	</div>
 
 	<div class="row mb-3">
 		<label for="category" class="col-form-label col-md-3">Category:</label>
 		<div class="col-md-8">
-			<InputSelect id="productCategories" class="form-control col-md-8" @bind-Value="@EditingProduct.CategoryId" placeholder="Enter product price">
+			<InputSelect id="productCategories" class="form-control col-md-8" @bind-Value="@SelectedProduct.CategoryId" placeholder="Enter product price">
 				@foreach (var category in Categories)
 				{
 					<option value="@category.Id">@category.Name</option>
@@ -47,15 +47,15 @@ OnValidSubmit="@HandleValidSubmit">
 	<div class="row mb-3">
 		<label for="description" class="col-form-label col-md-3">Description:</label>
 		<div class="col-md-8">
-			<InputTextArea id="productDescription" class="form-control col-md-8" @bind-Value="@EditingProduct.Description" placeholder="Enter product name" />
+			<InputTextArea id="productDescription" class="form-control col-md-8" @bind-Value="@SelectedProduct.Description" placeholder="Enter product name" />
 		</div>
-		<ValidationMessage class="offset-md-3" For="@( () => EditingProduct.Name)" />
+		<ValidationMessage class="offset-md-3" For="@( () => SelectedProduct.Description)" />
 	</div>
 	
 	<div class="row mb-3">
 		<label for="status" class="col-form-label col-md-3">In stock:</label>
 		<div class="col-md-8">
-			<InputCheckbox id="status" @bind-Value="@EditingProduct.Status"></InputCheckbox><span class="ms-2">If in stock checked</span>
+			<InputCheckbox id="status" @bind-Value="@SelectedProduct.Status"></InputCheckbox><span class="ms-2">If in stock checked</span>
 		</div>
 	</div>
 

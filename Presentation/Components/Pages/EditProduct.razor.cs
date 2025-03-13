@@ -14,7 +14,7 @@ namespace Presentation.Components.Pages
         public HttpClient Http { get; set; }
 
         [SupplyParameterFromForm]
-        public ProductUpdateDto? EditingProduct { get; set; }
+        public ProductFrontDto? SelectedProduct { get; set; }
         public ProductUpdateDto? OriginalProduct { get; set; }
         public List<CategoryDtoApi> Categories { get; set; } = new();
         protected string message = string.Empty;
@@ -24,7 +24,7 @@ namespace Presentation.Components.Pages
         protected override void OnInitialized()
         {
             Categories = AppState.Categories;
-            EditingProduct = new ProductUpdateDto(AppState.SelectedProduct);
+            SelectedProduct = AppState.SelectedProduct;
             OriginalProduct = new ProductUpdateDto(AppState.SelectedProduct);
 
             //OriginalProduct = new ProductUpdateDto()
@@ -39,24 +39,25 @@ namespace Presentation.Components.Pages
 
         private async Task HandleValidSubmit()
         {
-            var updatedProduct = OriginalProduct.GetUpdatedFields(OriginalProduct);
+            var editedProduct = new ProductUpdateDto(SelectedProduct);
+            var updatedProduct = OriginalProduct.GetUpdatedFields(editedProduct);
 
-            if (EditingProduct != null)
+            if (editedProduct != null)
             {
                 var response = await Http.PatchAsJsonAsync(
-                    $"/api/products/{EditingProduct.Id}",
-                    EditingProduct
+                    $"/api/products/{SelectedProduct.Id}",
+                    SelectedProduct
                 );
 
                 if (response.IsSuccessStatusCode)
                 {
-                    message = $"{EditingProduct.Name} was updated in database";
+                    message = $"{SelectedProduct.Name} was updated in database";
                     statusClass = "alert-success";
                     isProductUpdated = true;
                 }
                 else
                 {
-                    message = $"{EditingProduct.Name} was not updated";
+                    message = $"{SelectedProduct.Name} was not updated";
                     statusClass = "alert-warning";
                     isProductUpdated = false;
                 }
