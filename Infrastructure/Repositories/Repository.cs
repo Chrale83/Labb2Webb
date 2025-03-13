@@ -42,14 +42,17 @@ namespace Infrastructure.Repositories
             return await dbSet.ToListAsync();
         }
 
-        public Task GetByIdAsync(int id)
+        public async Task<TEntity> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await dbSet.FindAsync(id);
         }
 
-        public Task<bool> UpdateAsync(TEntity enityt)
+        public async Task<bool> UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            var trackedEntity = dbSet.Attach(entity);
+            dbContext.Entry(entity).State = EntityState.Modified;
+            await dbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

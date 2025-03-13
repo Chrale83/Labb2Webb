@@ -4,9 +4,11 @@
         where TEntity : class
     {
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task GetByIdAsync(int id);
+        Task<TEntity> GetByIdAsync(int id);
         Task<TEntity> AddAsync(TEntity entity);
-        Task<bool> UpdateAsync(TEntity enityt);
+
         Task<bool> DeleteAsync(int id);
+
+        Task<bool> UpdateAsync(TEntity entity);
     }
 }

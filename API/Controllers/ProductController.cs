@@ -1,6 +1,7 @@
 ﻿using Domain.Dtos;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.DTOs;
 
 namespace API.Controllers
 {
@@ -50,5 +51,21 @@ namespace API.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto productUpdateDto)
+        {
+            await _productService.UpdateProductAsync(id, productUpdateDto);
+            return Ok();
+        }
+
+        //[HttpPatch]
+        //[Route("{id}")]
+        //public async Task<IActionResult> UpdateProduct(int id, Dictionary<string, object> updates)
+        //{
+        //    await _productService.UpdateProduct(id, updates);
+        //    return Ok();
+        //}
     }
 }

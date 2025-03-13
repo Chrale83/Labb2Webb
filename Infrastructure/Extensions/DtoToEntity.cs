@@ -1,5 +1,6 @@
 ﻿using Domain.Dtos;
 using Domain.Entities;
+using Presentation.DTOs;
 
 namespace Infrastructure.Extensions
 {
@@ -17,6 +18,15 @@ namespace Infrastructure.Extensions
             };
 
             return product;
+        }
+
+        public static void UpdateFromDTO(this Product updated, ProductUpdateDto dto)
+        {
+            updated.Name = dto.Name;
+            updated.Description = dto.Description;
+            updated.Price = dto.Price;
+            updated.CategoryId = dto.CategoryId;
+            updated.Status = dto.Status;
         }
     }
 }

@@ -2,33 +2,52 @@
 using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Extensions;
+using Presentation.DTOs;
 
 namespace Infrastructure.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IRepository<Product> repository;
+        private readonly IRepository<Product> _repository;
 
         public ProductService(IRepository<Product> repository)
         {
-            this.repository = repository;
+            _repository = repository;
         }
 
         public async Task<Product> CreateProductAsync(ProductDto productDto)
         {
             var product = productDto.ProductDtoToEntity();
 
-            return await repository.AddAsync(product);
+            return await _repository.AddAsync(product);
         }
 
         public async Task<bool> DeleteProductAsync(int id)
         {
-            return await repository.DeleteAsync(id);
+            return await _repository.DeleteAsync(id);
         }
 
         public async Task<IEnumerable<ProductDto>> GetProductsAsync()
         {
-            return (await repository.GetAllAsync()).ProductsToDto();
+            return (await _repository.GetAllAsync()).ProductsToDto();
         }
+
+        public async Task<bool> UpdateProductAsync(int id, ProductUpdateDto productUpdateDto)
+        {
+            var productToUpdate = await _repository.GetByIdAsync(id);
+            if (productToUpdate == null)
+            {
+                return false;
+            }
+
+            productToUpdate.UpdateFromDTO(productUpdateDto);
+
+            return await _repository.UpdateAsync(productToUpdate);
+        }
+
+        //Task IProductService.UpdateProduct(int id, Dictionary<string, object> updatedProduct)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

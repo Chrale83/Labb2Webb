@@ -15,7 +15,8 @@ namespace Presentation.Components.Pages
 
         [SupplyParameterFromForm]
         public ProductFrontDto? SelectedProduct { get; set; }
-        public ProductUpdateDto? OriginalProduct { get; set; }
+
+        //public ProductUpdateDto? OriginalProduct { get; set; }
         public List<CategoryDtoApi> Categories { get; set; } = new();
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
@@ -25,7 +26,7 @@ namespace Presentation.Components.Pages
         {
             Categories = AppState.Categories;
             SelectedProduct = AppState.SelectedProduct;
-            OriginalProduct = new ProductUpdateDto(AppState.SelectedProduct);
+            //OriginalProduct = new ProductUpdateDto(AppState.SelectedProduct);
 
             //OriginalProduct = new ProductUpdateDto()
             //{
@@ -40,13 +41,13 @@ namespace Presentation.Components.Pages
         private async Task HandleValidSubmit()
         {
             var editedProduct = new ProductUpdateDto(SelectedProduct);
-            var updatedProduct = OriginalProduct.GetUpdatedFields(editedProduct);
+            //var updatedProduct = OriginalProduct.GetUpdatedFields(editedProduct);
 
-            if (editedProduct != null)
+            if (SelectedProduct != null)
             {
-                var response = await Http.PatchAsJsonAsync(
+                var response = await Http.PutAsJsonAsync(
                     $"/api/products/{SelectedProduct.Id}",
-                    SelectedProduct
+                    editedProduct
                 );
 
                 if (response.IsSuccessStatusCode)
