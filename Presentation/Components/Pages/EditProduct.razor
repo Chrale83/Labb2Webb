@@ -20,13 +20,6 @@ FormName="EditProduct">
 		<ValidationMessage class="offset-md-3" For="@( () => EditingProduct.Name)" />
 </div>
 
-	<div class="row mb-3">
-		<label for="description" class="col-form-label col-md-3">Description:</label>
-		<div class="col-md-8">
-			<InputTextArea id="productDescription" class="form-control col-md-8" @bind-Value="@EditingProduct.Description" placeholder="Enter product name" />
-		</div>
-		<ValidationMessage class="offset-md-3" For="@( () => EditingProduct.Name)" />
-	</div>
 
 	<div class="row mb-3">
 		<label for="price" class="col-form-label col-md-3">Price:</label>
@@ -49,13 +42,21 @@ FormName="EditProduct">
 	</div>
 
 
+
+	<div class="row mb-3">
+		<label for="description" class="col-form-label col-md-3">Description:</label>
+		<div class="col-md-8">
+			<InputTextArea id="productDescription" class="form-control col-md-8" @bind-Value="@EditingProduct.Description" placeholder="Enter product name" />
+		</div>
+		<ValidationMessage class="offset-md-3" For="@( () => EditingProduct.Name)" />
+	</div>
+	
 	<div class="row mb-3">
 		<label for="status" class="col-form-label col-md-3">In stock:</label>
 		<div class="col-md-8">
 			<InputCheckbox id="status" @bind-Value="@EditingProduct.Status"></InputCheckbox><span class="ms-2">If in stock checked</span>
 		</div>
 	</div>
-
 
 
 </EditForm>

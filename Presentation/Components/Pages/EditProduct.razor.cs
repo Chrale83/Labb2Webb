@@ -1,23 +1,23 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
+using Presentation.States;
 
 namespace Presentation.Components.Pages
 {
     public partial class EditProduct
     {
-        [SupplyParameterFromForm]
-        public ProductFrontDto? EditingProduct { get; set; } =
-            new ProductFrontDto
-            {
-                Name = "TEST",
-                Description = "hdjkshdksjdhsjkdhskjdhsdjkhsdkjshdkjshdkjshdkjsd",
-            };
+        [Inject]
+        public AppState appState { get; set; }
 
-        public List<CategoryDtoApi> Categories { get; set; } =
-            new()
-            {
-                new CategoryDtoApi { Id = 1, Name = "grafik" },
-                new CategoryDtoApi { Id = 2, Name = "skärm" },
-            };
+        [SupplyParameterFromForm]
+        public ProductFrontDto? EditingProduct { get; set; }
+
+        protected override void OnInitialized()
+        {
+            EditingProduct = appState.SelectedProduct;
+            Categories = appState.Categories;
+        }
+
+        public List<CategoryDtoApi> Categories { get; set; } = new();
     }
 }

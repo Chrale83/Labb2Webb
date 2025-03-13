@@ -42,6 +42,12 @@ namespace Presentation.Components.Pages
             }
         }
 
+        private async Task EditProduct()
+        {
+            appState.SelectedProduct = SelectedProduct;
+            Navigation.NavigateTo("/editproductpages");
+        }
+
         private async Task OpenConfirmDialogDelete()
         {
             var parameters = new DialogParameters { ["ProductName"] = SelectedProduct.Name };

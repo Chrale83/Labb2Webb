@@ -1,9 +1,10 @@
-﻿@page "/manageproducts"
-@using DTOs
-@rendermode InteractiveServer
+﻿@using DTOs
 @using System.Net.Http.Json
 @using MudBlazor
+@rendermode InteractiveServer
 @inject IDialogService DialogService
+@inject NavigationManager Navigation
+@page "/manageproducts"
 
 @if (Products.Count() == 0)
 {
@@ -15,12 +16,12 @@
         </MudGrid>
     </MudContainer>
     
-}
+} @* Laddningsymbol *@
 
 @if (SelectedProduct != null)
 {
     <div class="mb-3 ms-1">
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary">Edit product</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="EditProduct">Edit product</MudButton>
         <MudButton Variant="Variant.Outlined" Class="ms-3" @onclick="OpenConfirmDialogDelete" Color="Color.Secondary">Delete product</MudButton>
         <MudText Typo="Typo.h5" class="mt-2">Vald produkt: <strong>@SelectedProduct.Name</strong></MudText>
 
@@ -58,7 +59,7 @@
         </MudTd>
         
     </RowTemplate>
-</MudTable>
+</MudTable> @* Listan med alla produkter *@
         
 
 

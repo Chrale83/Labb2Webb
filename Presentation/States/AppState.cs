@@ -7,6 +7,7 @@ namespace Presentation.States
     public class AppState
     {
         public List<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
+        public ProductFrontDto SelectedProduct { get; set; }
 
         public async Task InitializeAsync(HttpClient http)
         {
