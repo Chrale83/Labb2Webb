@@ -7,7 +7,8 @@
 	
 Enhance
 method="put"
-FormName="EditProduct">
+FormName="EditProduct"
+OnValidSubmit="@HandleValidSubmit">
 
 <DataAnnotationsValidator />
 <ValidationSummary></ValidationSummary>
@@ -57,6 +58,9 @@ FormName="EditProduct">
 			<InputCheckbox id="status" @bind-Value="@EditingProduct.Status"></InputCheckbox><span class="ms-2">If in stock checked</span>
 		</div>
 	</div>
+
+	<MudButton Variant="Variant.Outlined" Color="Color.Warning">Save Changes</MudButton>
+
 
 
 </EditForm>

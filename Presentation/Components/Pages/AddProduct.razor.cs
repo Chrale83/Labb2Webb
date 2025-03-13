@@ -10,7 +10,7 @@ namespace Presentation.Components.Pages
         public HttpClient? Http { get; set; }
 
         [Inject]
-        public AppState? appState { get; set; }
+        public AppState? AppState { get; set; }
 
         [SupplyParameterFromForm]
         public ProductFrontDto? Product { get; set; }
@@ -19,18 +19,18 @@ namespace Presentation.Components.Pages
 
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
-        protected bool ProductSaved = false;
+        protected bool isProductSaved = false;
 
         protected override async Task OnInitializedAsync()
         {
-            ProductSaved = false;
+            isProductSaved = false;
             Product ??= new() { CategoryId = 1 };
 
-            if (appState.Categories.Count == 0)
+            if (AppState.Categories.Count == 0)
             {
-                await appState.InitializeAsync(Http);
+                await AppState.InitializeAsync(Http);
             }
-            Categories = appState.Categories;
+            Categories = AppState.Categories;
         }
 
         private void HandleInvalidSubmit()
@@ -45,7 +45,7 @@ namespace Presentation.Components.Pages
             var response = await Http.PostAsJsonAsync("api/products", Product);
             statusClass = "alert-success";
             message = "Product added to database";
-            ProductSaved = true;
+            isProductSaved = true;
         }
     }
 }
