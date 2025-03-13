@@ -9,11 +9,11 @@ namespace Presentation.Components.Pages
         [Inject]
         public HttpClient? Http { get; set; }
 
-        [SupplyParameterFromForm]
-        public ProductFrontDto? Product { get; set; }
-
         [Inject]
         public AppState? appState { get; set; }
+
+        [SupplyParameterFromForm]
+        public ProductFrontDto? Product { get; set; }
 
         public List<CategoryDtoApi> Categories { get; set; } = new();
 
@@ -25,8 +25,12 @@ namespace Presentation.Components.Pages
         {
             ProductSaved = false;
             Product ??= new() { CategoryId = 1 };
+
+            if (appState.Categories.Count == 0)
+            {
+                await appState.InitializeAsync(Http);
+            }
             Categories = appState.Categories;
-            //Categories = await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories");
         }
 
         private void HandleInvalidSubmit()

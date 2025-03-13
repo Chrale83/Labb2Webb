@@ -2,6 +2,7 @@
 using MudBlazor;
 using Presentation.Components.Dialogs;
 using Presentation.DTOs;
+using Presentation.States;
 
 namespace Presentation.Components.Pages
 {
@@ -9,6 +10,9 @@ namespace Presentation.Components.Pages
     {
         [Inject]
         private HttpClient Http { get; set; } = default!;
+
+        [Inject]
+        public AppState appState { get; set; }
 
         private MudTable<ProductFrontDto>? mudTable;
         private IEnumerable<ProductFrontDto> Products { get; set; } = new List<ProductFrontDto>();
@@ -19,8 +23,12 @@ namespace Presentation.Components.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            Categories =
-                await Http.GetFromJsonAsync<List<CategoryDtoApi>>("/api/categories") ?? new();
+            if (appState.Categories.Count == 0)
+            {
+                await appState.InitializeAsync(Http);
+            }
+            Categories = appState.Categories;
+
             Products = await Http.GetFromJsonAsync<List<ProductFrontDto>>("/api/products") ?? new();
         }
 

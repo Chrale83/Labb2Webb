@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
+using static System.Net.WebRequestMethods;
 
 namespace Presentation.States
 {
     public class AppState
     {
-        [Inject]
-        public HttpClient? Http { get; set; }
         public List<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
 
         public async Task InitializeAsync(HttpClient http)
