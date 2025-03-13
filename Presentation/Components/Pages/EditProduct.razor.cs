@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
+using Presentation.Extensions;
 using Presentation.States;
 
 namespace Presentation.Components.Pages
@@ -13,7 +14,8 @@ namespace Presentation.Components.Pages
         public HttpClient Http { get; set; }
 
         [SupplyParameterFromForm]
-        public ProductFrontDto? EditingProduct { get; set; }
+        public ProductUpdateDto? EditingProduct { get; set; }
+        public ProductUpdateDto? OriginalProduct { get; set; }
         public List<CategoryDtoApi> Categories { get; set; } = new();
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
@@ -21,12 +23,24 @@ namespace Presentation.Components.Pages
 
         protected override void OnInitialized()
         {
-            EditingProduct = AppState.SelectedProduct;
             Categories = AppState.Categories;
+            EditingProduct = new ProductUpdateDto(AppState.SelectedProduct);
+            OriginalProduct = new ProductUpdateDto(AppState.SelectedProduct);
+
+            //OriginalProduct = new ProductUpdateDto()
+            //{
+            //    Name = EditingProduct.Name,
+            //    CategoryId = EditingProduct.CategoryId,
+            //    Description = EditingProduct.Description,
+            //    Price = EditingProduct.Price,
+            //    Status = EditingProduct.Status,
+            //};
         }
 
         private async Task HandleValidSubmit()
         {
+            var updatedProduct = OriginalProduct.GetUpdatedFields(OriginalProduct);
+
             if (EditingProduct != null)
             {
                 var response = await Http.PatchAsJsonAsync(

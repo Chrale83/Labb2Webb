@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
-using Presentation.DTOs;
-using static System.Net.WebRequestMethods;
+﻿using Presentation.DTOs;
 
 namespace Presentation.States
 {
