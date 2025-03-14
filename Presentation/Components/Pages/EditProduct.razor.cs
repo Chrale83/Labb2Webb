@@ -11,7 +11,8 @@ namespace Presentation.Components.Pages
         public AppState AppState { get; set; }
 
         [Inject]
-        public HttpClient Http { get; set; }
+        private IHttpClientFactory HttpClientFactory { get; set; } = default!;
+        private HttpClient? _httpClient;
 
         [SupplyParameterFromForm]
         public ProductFrontDto? SelectedProduct { get; set; }
@@ -24,6 +25,7 @@ namespace Presentation.Components.Pages
 
         protected override void OnInitialized()
         {
+            _httpClient = HttpClientFactory.CreateClient("MyAPI");
             Categories = AppState.Categories;
             SelectedProduct = AppState.SelectedProduct;
             //OriginalProduct = new ProductUpdateDto(AppState.SelectedProduct);
@@ -45,7 +47,7 @@ namespace Presentation.Components.Pages
 
             if (SelectedProduct != null)
             {
-                var response = await Http.PutAsJsonAsync(
+                var response = await _httpClient.PutAsJsonAsync(
                     $"/api/products/{SelectedProduct.Id}",
                     editedProduct
                 );

@@ -9,7 +9,8 @@ namespace Presentation.Components.Pages
     public partial class ManageProducts
     {
         [Inject]
-        private HttpClient Http { get; set; } = default!;
+        private IHttpClientFactory HttpClientFactory { get; set; } = default!;
+        private HttpClient? _httpClient;
 
         [Inject]
         public AppState appState { get; set; }
@@ -23,20 +24,22 @@ namespace Presentation.Components.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            _httpClient = HttpClientFactory.CreateClient("MyAPI");
             if (appState.Categories.Count == 0)
             {
-                await appState.InitializeAsync(Http);
+                await appState.InitializeAsync(_httpClient);
             }
             Categories = appState.Categories;
 
-            Products = await Http.GetFromJsonAsync<List<ProductFrontDto>>("/api/products") ?? new();
+            Products =
+                await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>("/api/products") ?? new();
         }
 
         private async Task DeleteProduct()
         {
             if (SelectedProduct != null)
             {
-                var response = await Http.DeleteAsync($"api/products/{SelectedProduct.Id}");
+                var response = await _httpClient.DeleteAsync($"api/products/{SelectedProduct.Id}");
                 if (response.IsSuccessStatusCode) { }
                 else { }
             }
@@ -65,7 +68,9 @@ namespace Presentation.Components.Pages
             if (!result.Canceled)
             {
                 await DeleteProduct();
-                Products = await Http.GetFromJsonAsync<List<ProductFrontDto>>("/api/products");
+                Products = await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
+                    "/api/products"
+                );
                 SelectedProduct = null;
             }
         }

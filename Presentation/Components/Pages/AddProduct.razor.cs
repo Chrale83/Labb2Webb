@@ -7,7 +7,8 @@ namespace Presentation.Components.Pages
     public partial class AddProduct
     {
         [Inject]
-        public HttpClient? Http { get; set; }
+        public IHttpClientFactory HttpClientFactory { get; set; } = default!;
+        private HttpClient? _httpClient;
 
         [Inject]
         public AppState? AppState { get; set; }
@@ -23,12 +24,13 @@ namespace Presentation.Components.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            _httpClient = HttpClientFactory.CreateClient("MyAPI");
             isProductSaved = false;
             Product ??= new() { CategoryId = 1 };
 
             if (AppState.Categories.Count == 0)
             {
-                await AppState.InitializeAsync(Http);
+                await AppState.InitializeAsync(_httpClient);
             }
             Categories = AppState.Categories;
         }
@@ -42,7 +44,7 @@ namespace Presentation.Components.Pages
 
         private async Task HandleValidSubmit()
         {
-            var response = await Http.PostAsJsonAsync("api/products", Product);
+            var response = await _httpClient.PostAsJsonAsync("api/products", Product);
             statusClass = "alert-success";
             message = "Product added to database";
             isProductSaved = true;
