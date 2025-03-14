@@ -28,9 +28,55 @@
     </div>
 }
 
+<div class="mb-2 ms-1 ">
+    
+    <input class="form-control" @bind="searchText"
+           @oninput="SearchProducts" placeholder="Search by product name" />
+    
+</div>
+
+@if (isSearching == false)
+{
+    <MudTable T="ProductFrontDto"
+              Items="@Products"
+              Hover="true"
+              Breakpoint="Breakpoint.Sm"
+              @ref="mudTable"
+              RowClass="cursor-pointer"
+              @bind-SelectedItem="SelectedProduct">
+
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Price</MudTh>
+            <MudTh>Category</MudTh>
+            <MudTh>In stock</MudTh>
+
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Price">@context.Price kr</MudTd>
+            <MudTd DataLabel="Category">
+                @Categories.Where(c => c.Id == context.CategoryId).Select(c => c.Name).FirstOrDefault()
+            </MudTd>
+            <MudTd DataLabel="Status">
+                @if (context.Status)
+                {
+                    <span>In stock</span>
+                }
+                else
+                {
+                    <span>Not in stock</span>
+                }
+            </MudTd>
+
+        </RowTemplate>
+    </MudTable>
+}
+else{
+
 <MudTable 
     T="ProductFrontDto" 
-    Items="@Products" 
+    Items="@SearchedProducts" 
     Hover="true" 
     Breakpoint="Breakpoint.Sm" 
     @ref="mudTable"
@@ -60,10 +106,12 @@
         
     </RowTemplate>
 </MudTable> @* Listan med alla produkter *@
-        
+}
+ 
 
 
-    
+
+
 
 
 
