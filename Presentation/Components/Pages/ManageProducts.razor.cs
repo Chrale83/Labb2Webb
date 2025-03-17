@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Presentation.Components.Dialogs;
@@ -16,17 +17,17 @@ namespace Presentation.Components.Pages
         [Inject]
         public AppState? appState { get; set; }
 
-        private MudTable<ProductFrontDto>? mudTable;
-        private List<ProductFrontDto> Products { get; set; } = new List<ProductFrontDto>();
-        private List<ProductFrontDto> SearchedProducts { get; set; } = new List<ProductFrontDto>();
-        public IEnumerable<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
+        private MudTable<ProductDTO>? mudTable;
+        private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+        private List<ProductDTO> SearchedProducts { get; set; } = new List<ProductDTO>();
+        public IEnumerable<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
 
         [Parameter]
-        public ProductFrontDto? SelectedProduct { get; set; }
+        public ProductDTO? SelectedProduct { get; set; }
 
         [Parameter]
         public string searchText { get; set; } = string.Empty;
-        private bool isSearching = false;
+        private string message = string.Empty;
 
         //private void SearchProducts2(ChangeEventArgs input)
         //{
@@ -53,39 +54,38 @@ namespace Presentation.Components.Pages
             {
                 case 0:
                     Products =
-                        await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>("/api/products")
+                        await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products")
                         ?? new();
                     break;
                 case >= 2:
-                    Products =
-                        await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
-                            $"/api/products/{searchWord}"
-                        ) ?? new();
+                    await ResponseSearchProducts(searchWord);
+                    //Products =
+                    //    await _httpClient.GetFromJsonAsync<List<ProductDTO>>(
+                    //        $"/api/products/search?searchWord={searchWord}"
+                    //    ) ?? new();
 
                     break;
             }
             StateHasChanged();
+        }
 
-            //if (searchWord.Count() >= 2)
-            //{
-            //    SearchedProducts =
-            //        await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
-            //            $"/api/products/{searchWord}"
-            //        ) ?? new();
-            //    isSearching = true;
-            //    StateHasChanged();
-            //}
-            //if ()
-            //{
-            //        "/api/products"
-            //    );
+        public async Task ResponseSearchProducts(string searchWord)
+        {
+            var response = await _httpClient.GetAsync(
+                $"/api/products/search?searchWord={searchWord}"
+            );
 
-            //}
-            //else
-            //{
-            //    SearchedProducts = await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
-            //    StateHasChanged();
-            //}
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                Products = await response.Content.ReadFromJsonAsync<List<ProductDTO>>() ?? new();
+                message = string.Empty;
+            }
+            else if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                Products = new();
+                message = "No products found";
+            }
+            else { }
         }
 
         //private bool resetValueOnEmptyText;
@@ -114,7 +114,7 @@ namespace Presentation.Components.Pages
             Categories = appState.Categories;
 
             Products =
-                await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>("/api/products") ?? new();
+                await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products") ?? new();
         }
 
         private async Task DeleteProduct()
@@ -150,9 +150,7 @@ namespace Presentation.Components.Pages
             if (!result.Canceled)
             {
                 await DeleteProduct();
-                Products = await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
-                    "/api/products"
-                );
+                Products = await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products");
                 SelectedProduct = null;
             }
         }

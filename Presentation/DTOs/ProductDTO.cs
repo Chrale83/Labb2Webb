@@ -2,7 +2,7 @@
 
 namespace Presentation.DTOs
 {
-    public class ProductFrontDto
+    public class ProductDTO
     {
         public int Id { get; set; }
 

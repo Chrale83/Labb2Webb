@@ -34,6 +34,10 @@ namespace API.Controllers
         public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
             var products = await _productService.GetProductsAsync();
+            if (!products.Any())
+            {
+                return NoContent();
+            }
 
             return Ok(products);
         }
@@ -61,13 +65,16 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        [Route("{searchWord}")]
+        [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> SearchProductsAsync(
-            string searchWord
+            [FromQuery] string searchWord
         )
         {
             var products = await _productService.SearchProductsAsync(searchWord);
+            if (!products.Any())
+            {
+                return NoContent();
+            }
             return Ok(products);
         }
 

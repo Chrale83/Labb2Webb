@@ -36,8 +36,8 @@ using (var scope = app.Services.CreateScope())
     try
     {
         appState.Categories =
-            await httpClient.GetFromJsonAsync<List<CategoryDtoApi>>("api/categories")
-            ?? new List<CategoryDtoApi>();
+            await httpClient.GetFromJsonAsync<List<CategoryDTO>>("api/categories")
+            ?? new List<CategoryDTO>();
     }
     catch (Exception ex)
     {

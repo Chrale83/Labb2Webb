@@ -15,10 +15,10 @@ namespace Presentation.Components.Pages
         private HttpClient? _httpClient;
 
         [SupplyParameterFromForm]
-        public ProductFrontDto? SelectedProduct { get; set; }
+        public ProductDTO? SelectedProduct { get; set; }
 
         //public ProductUpdateDto? OriginalProduct { get; set; }
-        public List<CategoryDtoApi> Categories { get; set; } = new();
+        public List<CategoryDTO> Categories { get; set; } = new();
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
         protected bool isProductUpdated = false;
