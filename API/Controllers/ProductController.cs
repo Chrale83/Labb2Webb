@@ -1,4 +1,5 @@
 ﻿using Domain.Dtos;
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.DTOs;
@@ -58,6 +59,16 @@ namespace API.Controllers
         {
             await _productService.UpdateProductAsync(id, productUpdateDto);
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("{searchWord}")]
+        public async Task<ActionResult<IEnumerable<ProductDto>>> SearchProductsAsync(
+            string searchWord
+        )
+        {
+            var products = await _productService.SearchProductsAsync(searchWord);
+            return Ok(products);
         }
 
         //[HttpPatch]

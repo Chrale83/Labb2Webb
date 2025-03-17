@@ -9,10 +9,12 @@ namespace Infrastructure.Services
     public class ProductService : IProductService
     {
         private readonly IRepository<Product> _repository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IRepository<Product> repository)
+        public ProductService(IRepository<Product> repository, IProductRepository productRepository)
         {
             _repository = repository;
+            _productRepository = productRepository;
         }
 
         public async Task<Product> CreateProductAsync(ProductDto productDto)
@@ -30,6 +32,15 @@ namespace Infrastructure.Services
         public async Task<IEnumerable<ProductDto>> GetProductsAsync()
         {
             return (await _repository.GetAllAsync()).ProductsToDto();
+        }
+
+        public async Task<IEnumerable<ProductDto>> SearchProductsAsync(string search)
+        {
+            var formatedSearch = search.ToLower();
+            var hehe = (
+                await _productRepository.SearchProductsAsync(formatedSearch)
+            ).ProductsToDto();
+            return hehe;
         }
 
         public async Task<bool> UpdateProductAsync(int id, ProductUpdateDto productUpdateDto)

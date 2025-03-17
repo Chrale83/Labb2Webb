@@ -14,5 +14,7 @@ namespace Domain.Interfaces
         Task<bool> UpdateProductAsync(int id, ProductUpdateDto productUpdateDto);
 
         //Task UpdateProduct(int id, Dictionary<string, object> updatedProduct);
+
+        Task<IEnumerable<ProductDto>> SearchProductsAsync(string search);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Presentation.Components.Dialogs;
 using Presentation.DTOs;
@@ -9,11 +10,11 @@ namespace Presentation.Components.Pages
     public partial class ManageProducts
     {
         [Inject]
-        private IHttpClientFactory HttpClientFactory { get; set; } = default!;
+        private IHttpClientFactory? HttpClientFactory { get; set; } = default!;
         private HttpClient? _httpClient;
 
         [Inject]
-        public AppState appState { get; set; }
+        public AppState? appState { get; set; }
 
         private MudTable<ProductFrontDto>? mudTable;
         private List<ProductFrontDto> Products { get; set; } = new List<ProductFrontDto>();
@@ -27,34 +28,64 @@ namespace Presentation.Components.Pages
         public string searchText { get; set; } = string.Empty;
         private bool isSearching = false;
 
-        private void SearchProducts(ChangeEventArgs input)
-        {
-            var textString = input.Value?.ToString();
-            if (textString.Count() > 1)
-            {
-                SearchedProducts = Products
-                    .Where(p => p.Name.Contains(textString, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-                isSearching = true;
-            }
-            else
-            {
-                isSearching = false;
-            }
-        }
+        //private void SearchProducts2(ChangeEventArgs input)
+        //{
+        //    var textString = input.Value?.ToString();
+        //    if (textString.Count() > 1)
+        //    {
+        //        SearchedProducts = Products
+        //            .Where(p => p.Name.Contains(textString, StringComparison.OrdinalIgnoreCase))
+        //            .ToList();
+        //        isSearching = true;
+        //    }
+        //    else
+        //    {
+        //        isSearching = false;
+        //    }
+        //}
 
-        private void SearchProducts2(string text)
+        private async void SearchProducts(ChangeEventArgs input)
         {
-            if (!string.IsNullOrWhiteSpace(text) && text.Length >= 2)
+            var searchWord = input.Value?.ToString();
+            var counterChar = searchWord.Length;
+
+            switch (counterChar)
             {
-                SearchedProducts = Products
-                    .Where(p => p.Name.Contains(text, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
+                case 0:
+                    Products =
+                        await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>("/api/products")
+                        ?? new();
+                    break;
+                case >= 2:
+                    Products =
+                        await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
+                            $"/api/products/{searchWord}"
+                        ) ?? new();
+
+                    break;
             }
-            else
-            {
-                SearchedProducts.Clear();
-            }
+            StateHasChanged();
+
+            //if (searchWord.Count() >= 2)
+            //{
+            //    SearchedProducts =
+            //        await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
+            //            $"/api/products/{searchWord}"
+            //        ) ?? new();
+            //    isSearching = true;
+            //    StateHasChanged();
+            //}
+            //if ()
+            //{
+            //        "/api/products"
+            //    );
+
+            //}
+            //else
+            //{
+            //    SearchedProducts = await _httpClient.GetFromJsonAsync<List<ProductFrontDto>>(
+            //    StateHasChanged();
+            //}
         }
 
         //private bool resetValueOnEmptyText;

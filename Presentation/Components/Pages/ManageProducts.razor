@@ -35,8 +35,7 @@
     
 </div>
 
-@if (isSearching == false)
-{
+
     <MudTable T="ProductFrontDto"
               Items="@Products"
               Hover="true"
@@ -71,10 +70,10 @@
 
         </RowTemplate>
     </MudTable>
-}
-else{
 
-<MudTable 
+
+
+ @* <MudTable 
     T="ProductFrontDto" 
     Items="@SearchedProducts" 
     Hover="true" 
@@ -105,8 +104,8 @@ else{
         </MudTd>
         
     </RowTemplate>
-</MudTable> @* Listan med alla produkter *@
-}
+</MudTable> Listan med alla produkter *@
+
  
 
 
