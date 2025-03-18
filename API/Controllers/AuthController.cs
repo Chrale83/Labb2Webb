@@ -1,75 +1,41 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using Domain.Dtos;
+﻿using Domain.Dtos;
 using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
+using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 
 namespace API.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController(IConfiguration configuration) : ControllerBase
+    public class AuthController : ControllerBase
     {
-        public static Customer customer = new();
+        private readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
 
         [HttpPost("register")]
-        public ActionResult<Customer> Register(CustomerDto request)
+        public async Task<ActionResult<Customer>> Register(CustomerDto request)
         {
-            var hashedPassword = new PasswordHasher<Customer>().HashPassword(
-                customer,
-                request.Password
-            );
-
-            customer.Email = request.Email;
-            customer.PasswordHash = hashedPassword;
+            var customer = await _authService.RegisterAsync(request);
+            if (customer == null)
+                return BadRequest("Customer already exists!");
 
             return Ok(customer);
         }
 
         [HttpPost("login")]
-        public ActionResult<string> Login(CustomerDto request)
+        public async Task<ActionResult<string>> Login(CustomerLoginDto request)
         {
-            if (customer.Email != request.Email)
+            var token = await _authService.LoginAsync(request);
+            if (token == null)
             {
-                return BadRequest("User not found");
+                return BadRequest("invalid username or password");
             }
-            if (
-                new PasswordHasher<Customer>().VerifyHashedPassword(
-                    customer,
-                    customer.PasswordHash,
-                    request.Password
-                ) == PasswordVerificationResult.Failed
-            )
-            {
-                return BadRequest("Wrong password");
-            }
-
-            string token = CreateToken(customer);
 
             return Ok(token);
-        }
-
-        private string CreateToken(Customer customer)
-        {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, customer.Email) };
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!)
-            );
-
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512);
-
-            var tokenDescriptor = new JwtSecurityToken(
-                issuer: configuration.GetValue<string>("AppSettings:Issuer"),
-                audience: configuration.GetValue<string>("AppSettings:Audience "),
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(2),
-                signingCredentials: creds
-            );
-
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
     }
 }
