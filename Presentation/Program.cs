@@ -15,7 +15,6 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 builder.Services.AddSingleton<AppState>();
 builder.Services.AddMudServices();
-
 builder.Services.AddHttpClient(
     "MyAPI",
     client =>
