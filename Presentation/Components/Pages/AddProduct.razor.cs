@@ -22,7 +22,7 @@ namespace Presentation.Components.Pages
         protected string statusClass = string.Empty;
         protected bool isProductSaved = false;
 
-        protected async Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             _httpClient = HttpClientFactory.CreateClient("MyAPI");
             isProductSaved = false;
@@ -35,12 +35,11 @@ namespace Presentation.Components.Pages
             Categories = AppState.Categories;
         }
 
-        //private void HandleInvalidSubmit()
-        //{
-        //    statusClass = "alert-danger";
-        //    message = "Check your forms";
-        //    StateHasChanged();
-        //}
+        private void HandleInvalidSubmit()
+        {
+            statusClass = "alert-danger";
+            message = "Check your forms";
+        }
 
         private async Task HandleValidSubmit()
         {
