@@ -45,5 +45,12 @@ namespace API.Controllers
         {
             return Ok("you are autentitcated");
         }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin-only")]
+        public IActionResult AdminOnlyEndpoint()
+        {
+            return Ok("you are a admin");
+        }
     }
 }

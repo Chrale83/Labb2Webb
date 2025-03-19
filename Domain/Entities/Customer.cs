@@ -30,6 +30,8 @@ namespace Domain.Entities
         public string StreetNumber { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
 
+        public string Role { get; set; } = string.Empty;
+
         public ICollection<OrderHistory> OrderHistories { get; set; } = new List<OrderHistory>();
     }
 }
