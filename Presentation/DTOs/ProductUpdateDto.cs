@@ -8,7 +8,7 @@
         public bool Status { get; set; }
         public int CategoryId { get; set; }
 
-        public ProductUpdateDto(ProductFrontDto selected)
+        public ProductUpdateDto(ProductDTO selected)
         {
             if (selected != null)
             {

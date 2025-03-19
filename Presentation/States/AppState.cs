@@ -4,16 +4,16 @@ namespace Presentation.States
 {
     public class AppState
     {
-        public List<CategoryDtoApi> Categories { get; set; } = new List<CategoryDtoApi>();
-        public ProductFrontDto SelectedProduct { get; set; }
+        public List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
+        public ProductDTO SelectedProduct { get; set; }
 
         public async Task InitializeAsync(HttpClient http)
         {
             if (Categories.Count == 0)
             {
                 Categories =
-                    await http.GetFromJsonAsync<List<CategoryDtoApi>>("api/categories")
-                    ?? new List<CategoryDtoApi>();
+                    await http.GetFromJsonAsync<List<CategoryDTO>>("api/categories")
+                    ?? new List<CategoryDTO>();
             }
         }
     }

@@ -14,9 +14,9 @@ namespace Presentation.Components.Pages
         public AppState? AppState { get; set; }
 
         [SupplyParameterFromForm]
-        public ProductFrontDto? Product { get; set; }
+        public ProductDTO? Product { get; set; }
 
-        public List<CategoryDtoApi> Categories { get; set; } = new();
+        public List<CategoryDTO> Categories { get; set; } = new();
 
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
@@ -39,7 +39,6 @@ namespace Presentation.Components.Pages
         {
             statusClass = "alert-danger";
             message = "Check your forms";
-            StateHasChanged();
         }
 
         private async Task HandleValidSubmit()

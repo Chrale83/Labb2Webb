@@ -12,7 +12,9 @@
         <MudGrid Justify="Justify.Center">
             <MudItem xs="12" class="text-center">
                 <MudProgressCircular Color="Color.Primary" Size="Size.Large" Indeterminate="true" />
+                
             </MudItem>
+    
         </MudGrid>
     </MudContainer>
     
@@ -32,11 +34,12 @@
     
     <input class="form-control" @bind="searchText"
            @oninput="SearchProducts" placeholder="Search by product name" />
+           
     
 </div>
 
 
-    <MudTable T="ProductFrontDto"
+    <MudTable T="ProductDTO"
               Items="@Products"
               Hover="true"
               Breakpoint="Breakpoint.Sm"
@@ -70,6 +73,7 @@
 
         </RowTemplate>
     </MudTable>
+<MudText Class="text-bg-danger mt-2 border-black text-center">@message</MudText>
 
 
 

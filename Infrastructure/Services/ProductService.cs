@@ -36,11 +36,8 @@ namespace Infrastructure.Services
 
         public async Task<IEnumerable<ProductDto>> SearchProductsAsync(string search)
         {
-            var formatedSearch = search.ToLower();
-            var hehe = (
-                await _productRepository.SearchProductsAsync(formatedSearch)
-            ).ProductsToDto();
-            return hehe;
+            var formatedSearch = search.ToLower().Replace(" ", "");
+            return (await _productRepository.SearchProductsAsync(formatedSearch)).ProductsToDto();
         }
 
         public async Task<bool> UpdateProductAsync(int id, ProductUpdateDto productUpdateDto)
