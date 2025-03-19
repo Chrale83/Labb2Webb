@@ -77,7 +77,9 @@ namespace Infrastructure.Services
         {
             var claims = new List<Claim>
             {
+                new Claim(ClaimTypes.Name, customer.Email),
                 new Claim(ClaimTypes.NameIdentifier, customer.Id.ToString()),
+                new Claim(ClaimTypes.Role, customer.Role.ToString()),
             };
 
             var key = new SymmetricSecurityKey(

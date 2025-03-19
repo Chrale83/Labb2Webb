@@ -1,6 +1,6 @@
 ﻿using Domain.Dtos;
-using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.DTOs;
 
@@ -17,6 +17,7 @@ namespace API.Controllers
             _productService = productService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductDto productDto)
         {
@@ -42,6 +43,7 @@ namespace API.Controllers
             return Ok(products);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
@@ -57,6 +59,7 @@ namespace API.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto productUpdateDto)
