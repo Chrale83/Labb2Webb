@@ -4,9 +4,7 @@ using System.Text;
 using Domain.Dtos;
 using Domain.Entities;
 using Domain.Interfaces;
-using Infrastructure.Context;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,25 +12,25 @@ namespace Infrastructure.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly AppDbContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IAuthRepository _authRepository;
 
-        public AuthService(AppDbContext appDbContext, IConfiguration configuration)
+        public AuthService(IConfiguration configuration, IAuthRepository authRepository)
         {
             _configuration = configuration;
-            _context = appDbContext;
+
+            _authRepository = authRepository;
         }
 
         public async Task<string?> LoginAsync(CustomerLoginDto request)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(c =>
-                c.Email == request.Email
-            );
+            var customer = await _authRepository.LoginAsync(request.Email);
 
             if (customer == null)
             {
                 return null;
             }
+
             if (
                 new PasswordHasher<Customer>().VerifyHashedPassword(
                     customer,
@@ -49,7 +47,9 @@ namespace Infrastructure.Services
 
         public async Task<Customer?> RegisterAsync(CustomerDto request)
         {
-            if (await _context.Customers.AnyAsync(c => c.Email == request.Email))
+            var response = await _authRepository.CheckIfRegistred(request);
+
+            if (response)
             {
                 return null;
             }
@@ -70,10 +70,7 @@ namespace Infrastructure.Services
             customer.LastName = request.LastName;
             customer.StreetName = request.StreetName;
 
-            _context.Customers.Add(customer);
-            await _context.SaveChangesAsync();
-
-            return customer;
+            return await _authRepository.RegisterAsync(customer);
         }
 
         private string CreateToken(Customer customer)

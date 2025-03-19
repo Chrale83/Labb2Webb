@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Dtos;
+using Domain.Entities;
 
 namespace Domain.Interfaces
 {
-    public interface IAuthRepository { }
+    public interface IAuthRepository
+    {
+        Task<Customer> RegisterAsync(Customer customer);
+        Task<bool> CheckIfRegistred(CustomerDto request);
+        Task<Customer?> LoginAsync(string email);
+    }
 }
