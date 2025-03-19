@@ -1,0 +1,111 @@
+﻿@page	"/registercustomer"
+
+
+<h3>Skapa konto</h3>
+
+<EditForm Model="Customer"
+	OnValidSubmit="@RegisterCustomerSubmit"
+Enhance
+method="post"
+FormName="RegisterNewCustomer"
+>
+
+<DataAnnotationsValidator/>
+<ValidationSummary></ValidationSummary>
+
+    <div class="row mb-2 gx-1">
+        
+        <div class="col-4 pr-4">
+            
+            <label for="firstName" class="col-form-label fw-semibold">Förnamn:</label>
+            <InputText id="firstName" class="form-control w-75" @bind-Value="@Customer.FirstName" placeholder="Skriv in förnamn"></InputText>
+            <ValidationMessage For="@(() => Customer.FirstName)" />
+        </div>
+
+        <div class="col-4">
+            
+            <label for="lastName" class="col-form-label fw-semibold">Efternamn:</label>
+            <InputText id="lastName" class="form-control w-75" @bind-Value="@Customer.LastName" placeholder="Skriv in ditt efternamn"></InputText>
+            <ValidationMessage For="@(() => Customer.LastName)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 gx-1">
+        
+        <div class="col-4 pr-4">
+            
+            <label for="streetname" class="col-form-label fw-semibold">Gatuadress:</label>
+            <InputText id="streetname" class="form-control w-75" @bind-Value="@Customer.StreetName" placeholder="Skriv in förnamn"></InputText>
+            <ValidationMessage For="@(() => Customer.StreetName)" />
+        </div>
+
+        <div class="col-4">
+            
+            <label for="streetnumber" class="col-form-label fw-semibold">Gatunummer:</label>
+            <InputText id="streetnumber" inputmode="numeric" class="form-control w-25" @bind-Value="@Customer.StreetNumber" placeholder="Skriv in din gatuadress"></InputText>
+            <ValidationMessage For="@(() => Customer.StreetNumber)" />
+        </div>
+    </div>
+    
+    <div class="row mb-3 gx-1">
+        
+        <div class="col-4 pr-4">
+            
+            <label for="city" class="col-form-label fw-semibold">Stad:</label>
+            <InputText id="city" class="form-control w-75" @bind-Value="@Customer.City" placeholder="Skriv in vilken stad"></InputText>
+            <ValidationMessage For="@(() => Customer.FirstName)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 gx-1">
+
+        <div class="col-4 pr-4">
+
+            <label for="phonenumber" class="col-form-label fw-semibold">Mobilnummer:</label>
+            <InputText id="phonenumber" class="form-control w-75" inputmode="numeric" @bind-Value="@Customer.PhoneNumber" placeholder="Skriv in ditt telefonnummer"></InputText>
+            <ValidationMessage For="@(() => Customer.PhoneNumber)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 gx-1">
+        
+        <div class="col-4 pr-4">
+            
+            <label for="email" class="col-form-label fw-semibold">Email:</label>
+            <InputText id="email" class="form-control w-75" @bind-Value="@Customer.Email" placeholder="Skriv in EMail adress"></InputText>
+            <ValidationMessage For="@(() => Customer.Email)" />
+        </div>
+
+        <div class="col-4 mt-4">
+            
+            <label for="emailsec" class="col-form-label fw-semibold"></label>
+            <InputText id="emailsec" class="form-control w-75" @bind-Value="@Customer.SecondEmail" placeholder="Skriv in din email adress igen"></InputText>
+            <ValidationMessage For="@(() => Customer.SecondEmail)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 gx-1">
+
+        <div class="col-4 pr-4">
+
+            <label for="password" class="col-form-label fw-semibold">Lösenord:</label>
+            <InputText type="password" id="password" class="form-control w-75" @bind-Value="@Customer.Password" placeholder="Skriv in lösenord"></InputText>
+            <ValidationMessage For="@(() => Customer.Password)" />
+        </div>
+
+        <div class="col-4 mt-4">
+
+            <label for="passwordsec" class="col-form-label fw-semibold"></label>
+            <InputText type="password" id="passwordsec" class="form-control w-75" @bind-Value="@Customer.SecondPassword" placeholder="Skriv in ditt lösenord igen"></InputText>
+            <ValidationMessage For="@(() => Customer.SecondPassword)" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-outline-dark">Skapa konto</button>
+
+        
+
+
+
+
+
+</EditForm>

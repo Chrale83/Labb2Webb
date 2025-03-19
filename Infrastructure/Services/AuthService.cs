@@ -66,7 +66,7 @@ namespace Infrastructure.Services
             customer.PhoneNumber = request.PhoneNumber;
             customer.StreetNumber = request.StreetNumber;
             customer.City = request.City;
-            customer.FirstName = request.LastName;
+            customer.FirstName = request.FirstName;
             customer.LastName = request.LastName;
             customer.StreetName = request.StreetName;
 
