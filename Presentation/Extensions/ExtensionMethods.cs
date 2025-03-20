@@ -32,7 +32,7 @@ namespace Presentation.Extensions
             return updatedData;
         }
 
-        public static void SaveLoginDataToState(
+        public static async Task SaveLoginDataToState(
             this CustomerLoginResponseDTO loginData,
             AppState appState
         )
@@ -42,26 +42,47 @@ namespace Presentation.Extensions
             appState.UserInfo.Role = loginData.Role;
             appState.UserInfo.Email = loginData.Email;
             appState.UserInfo.FirstName = loginData.FirstName;
+            await Task.Delay(10);
         }
 
-        public static void SaveTokenToLocalStorage(
-            this HttpClient httpClient,
-            string token,
-            ILocalStorageService localStorage
-        )
-        {
-            localStorage.SetItemAsync("authToken", token);
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                "Bearer",
-                token
-            );
-        }
+        //public static async Task SaveTokenToLocalStorage(
+        //    this HttpClient httpClient,
+        //    string token,
+        //    ILocalStorageService localStorage
+        //)
+        //{
+        //    await localStorage.SetItemAsync("authToken", token);
+        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        //        "Bearer",
+        //        token
+        //    );
+        //}
+
+        //public static async Task SetTokenToHttpClientFromLStorage(
+        //    this HttpClient httpClient,
+        //    ILocalStorageService localStorage
+        //)
+        //{
+        //    var token = await localStorage.GetItemAsync<string>("authToken");
+        //    if (!string.IsNullOrEmpty(token))
+        //    {
+        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        //            "Bearer",
+        //            token
+        //        );
+        //    }
+        //}
 
         public static async Task SetTokenToHttpClientFromLStorage(
             this HttpClient httpClient,
             ILocalStorageService localStorage
         )
         {
+            if (httpClient.DefaultRequestHeaders.Authorization != null)
+            {
+                return; // Token finns redan, hämta inte igen
+            }
+
             var token = await localStorage.GetItemAsync<string>("authToken");
             if (!string.IsNullOrEmpty(token))
             {
@@ -70,6 +91,30 @@ namespace Presentation.Extensions
                     token
                 );
             }
+        }
+
+        public static void ClearUserData(this AppState data)
+        {
+            data.UserInfo = new();
+        }
+
+        public static async Task SaveTokenToLocalStorage(
+            this HttpClient httpClient,
+            string token,
+            ILocalStorageService localStorage
+        )
+        {
+            if (string.IsNullOrWhiteSpace(token))
+            {
+                Console.WriteLine("Warning: Trying to save an empty or null token.");
+                return;
+            }
+
+            await localStorage.SetItemAsync("authToken", token);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Bearer",
+                token
+            );
         }
     }
 }

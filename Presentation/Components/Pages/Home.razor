@@ -1,7 +1,13 @@
 ﻿@page "/"
+@using States
+@inject AppState appState
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Shopen!</h1>
 
-Welcome to your new app.
+
+@if (appState.IsLoggedIn)
+{
+	<h3>Hej @appState.UserInfo.FirstName</h3>
+}

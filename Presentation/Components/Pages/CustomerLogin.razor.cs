@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Net.NetworkInformation;
 using System.Text.Json;
 using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
@@ -25,27 +26,27 @@ namespace Presentation.Components.Pages
             _httpClient = HttpClientFactory.CreateClient("MyAPI");
         }
 
-        private bool isRendered = false;
+        //private bool isRendered = false;
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender)
-            {
-                _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
+        //protected override async Task OnAfterRenderAsync(bool firstRender)
+        //{
+        //    if (firstRender)
+        //    {
+        //        await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
 
-                var token = await LocalStorage.GetItemAsync<string>("authToken");
-                if (!string.IsNullOrEmpty(token))
-                {
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                        "Bearer",
-                        token
-                    );
-                }
+        //        var token = await LocalStorage.GetItemAsync<string>("authToken");
+        //        if (!string.IsNullOrEmpty(token))
+        //        {
+        //            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+        //                "Bearer",
+        //                token
+        //            );
+        //        }
 
-                isRendered = true;
-                StateHasChanged(); // För att UI ska uppdateras
-            }
-        }
+        //        isRendered = true;
+        //        StateHasChanged(); // För att UI ska uppdateras
+        //    }
+        //}
 
         private string message = "Inte testat än";
 
@@ -76,21 +77,16 @@ namespace Presentation.Components.Pages
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true }
                 );
 
-                _httpClient.SaveTokenToLocalStorage(customerData.Token, LocalStorage);
+                await customerData.SaveLoginDataToState(AppState);
+                await _httpClient.SaveTokenToLocalStorage(customerData.Token, LocalStorage);
 
-                //await LocalStorage.SetItemAsync("authToken", customerData.Token);
-
-                //// Lägg till token i HttpClient inför framtida anrop
-                //_httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                //    "Bearer",
-                //    customerData.Token
-                //);
-
-                customerData.SaveLoginDataToState(AppState);
-
-                //AppState.IsLoggedIn = true;
-                AppState.OnChange += StateHasChanged;
-                //Navigation.NavigateTo("/");
+                await InvokeAsync(() =>
+                {
+                    AppState.IsLoggedIn = true;
+                    StateHasChanged();
+                });
+                await Task.Delay(10);
+                Navigation.NavigateTo("/", forceLoad: true);
             }
             else
             {

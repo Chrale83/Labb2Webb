@@ -14,8 +14,11 @@ namespace Presentation.States
             get => _isLoggedin;
             set
             {
-                _isLoggedin = value;
-                NotifyStateChanged();
+                if (_isLoggedin != value)
+                {
+                    _isLoggedin = value;
+                    NotifyStateChanged();
+                }
             }
         }
 
