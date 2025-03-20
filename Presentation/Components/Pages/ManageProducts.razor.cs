@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Presentation.Components.Dialogs;
 using Presentation.DTOs;
@@ -26,22 +27,6 @@ namespace Presentation.Components.Pages
         [Parameter]
         public string searchText { get; set; } = string.Empty;
         private string message = string.Empty;
-
-        //private void SearchProducts2(ChangeEventArgs input)
-        //{
-        //    var textString = input.Value?.ToString();
-        //    if (textString.Count() > 1)
-        //    {
-        //        SearchedProducts = Products
-        //            .Where(p => p.Name.Contains(textString, StringComparison.OrdinalIgnoreCase))
-        //            .ToList();
-        //        isSearching = true;
-        //    }
-        //    else
-        //    {
-        //        isSearching = false;
-        //    }
-        //}
 
         private async void SearchProducts(ChangeEventArgs input)
         {
@@ -119,6 +104,15 @@ namespace Presentation.Components.Pages
         {
             if (SelectedProduct != null)
             {
+                var token = await LocalStorage.GetItemAsync<string>("authToken");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                        "Bearer",
+                        token
+                    );
+                }
+
                 var response = await _httpClient.DeleteAsync($"api/products/{SelectedProduct.Id}");
                 if (response.IsSuccessStatusCode) { }
                 else { }

@@ -5,6 +5,8 @@
 @inject IDialogService DialogService
 @inject NavigationManager Navigation
 @page "/manageproducts"
+@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
 
 @if (Products.Count() == 0)
 {

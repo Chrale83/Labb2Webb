@@ -1,4 +1,13 @@
 ﻿@inherits LayoutComponentBase
+@rendermode InteractiveServer
+
+
+@using States
+@using Blazored.LocalStorage
+@using Microsoft.AspNetCore.Components;
+@using System.Net.Http.Headers
+
+
 <MudThemeProvider />
 <MudPopoverProvider />
 <MudDialogProvider />
@@ -11,17 +20,60 @@
 
     <main>
         <div class="top-row px-4" style="background-color:darkslategray">
-            <NavLink class="nav-link" style="color:whitesmoke" href="registercustomer">
-                <span style="color:whitesmoke" aria-hidden="true"></span> Login
-            </NavLink>
             
-            <NavLink class="nav-link" style="color:whitesmoke" href="registercustomer">
-                <span style="color:whitesmoke" aria-hidden="true"></span> Create account
-            </NavLink>
+                <button type="button" class="btn btn-primary" style="color:whitesmoke" onclick="@Logout">Logout</button>
+            
+                <NavLink class="nav-link" style="color:whitesmoke" href="customerlogin">
+                    <span style="color:whitesmoke" aria-hidden="true"></span> Login
+                </NavLink>
+
+                <NavLink class="nav-link" style="color:whitesmoke" href="registercustomer">
+                    <span style="color:whitesmoke" aria-hidden="true"></span> Create account
+                </NavLink>
+            
         </div>
 
         <article class="content px-4">
+            
             @Body
         </article>
     </main>
 </div>
+
+@code {
+    [Inject]
+    public ILocalStorageService LocalStorage { get; set; }
+    [Inject]
+    public NavigationManager Navigation { get; set; }
+    [Inject]
+    public  AppState appState { get; set; }
+    [Inject]
+    public IHttpClientFactory HttpClientFactory { get; set; } = default!;
+    private HttpClient? _httpClient;
+
+    public async Task Logout(){
+        await LocalStorage.RemoveItemAsync("authToken");
+        appState.IsLoggedIn = false;
+        appState.OnChange += StateHasChanged;
+        Navigation.NavigateTo("/");
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        _httpClient = HttpClientFactory.CreateClient("MyAPI");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var token = await LocalStorage.GetItemAsync<string>("authToken");
+
+            // if (!string.IsNullOrEmpty(token))
+            // {
+            //     _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                
+            // }
+        }
+    }
+}

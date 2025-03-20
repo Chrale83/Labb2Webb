@@ -1,11 +1,27 @@
 ﻿using Presentation.DTOs;
+using Presentation.Models;
 
 namespace Presentation.States
 {
     public class AppState
     {
         public List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
-        public ProductDTO SelectedProduct { get; set; }
+        public UserInfo UserInfo { get; set; } = new();
+        public ProductDTO? SelectedProduct { get; set; }
+        private bool _isLoggedin;
+        public bool IsLoggedIn
+        {
+            get => _isLoggedin;
+            set
+            {
+                _isLoggedin = value;
+                NotifyStateChanged();
+            }
+        }
+
+        public event Action? OnChange;
+
+        private void NotifyStateChanged() => OnChange?.Invoke();
 
         public async Task InitializeAsync(HttpClient http)
         {

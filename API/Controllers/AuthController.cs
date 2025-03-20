@@ -28,15 +28,15 @@ namespace API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(CustomerLoginDto request)
+        public async Task<ActionResult<CustomerLoginResponseDto>> Login(CustomerLoginDto request)
         {
-            var token = await _authService.LoginAsync(request);
-            if (token == null)
+            var response = await _authService.LoginAsync(request);
+            if (response == null)
             {
                 return BadRequest("invalid username or password");
             }
 
-            return Ok(token);
+            return Ok(response);
         }
 
         [Authorize]
@@ -50,7 +50,14 @@ namespace API.Controllers
         [HttpGet("admin-only")]
         public IActionResult AdminOnlyEndpoint()
         {
-            return Ok("you are a admin");
+            return Ok("Du har admin rättigheter");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("user-only")]
+        public IActionResult UserOnlyEndpoint()
+        {
+            return Ok("du har user rättigheter");
         }
     }
 }

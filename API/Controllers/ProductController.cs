@@ -43,7 +43,8 @@ namespace API.Controllers
             return Ok(products);
         }
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)

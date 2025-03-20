@@ -22,7 +22,32 @@ namespace Infrastructure.Services
             _authRepository = authRepository;
         }
 
-        public async Task<string?> LoginAsync(CustomerLoginDto request)
+        //---------------Äldre-------------
+
+        //public async Task<string?> LoginAsync(CustomerLoginDto request)
+        //{
+        //    var customer = await _authRepository.LoginAsync(request.Email);
+
+        //    if (customer == null)
+        //    {
+        //        return null;
+        //    }
+
+        //    if (
+        //        new PasswordHasher<Customer>().VerifyHashedPassword(
+        //            customer,
+        //            customer.PasswordHash,
+        //            request.Password
+        //        ) == PasswordVerificationResult.Failed
+        //    )
+        //    {
+        //        return null;
+        //    }
+
+        //    return CreateToken(customer);
+        //}
+
+        public async Task<CustomerLoginResponseDto> LoginAsync(CustomerLoginDto request)
         {
             var customer = await _authRepository.LoginAsync(request.Email);
 
@@ -41,8 +66,16 @@ namespace Infrastructure.Services
             {
                 return null;
             }
+            var token = CreateToken(customer);
 
-            return CreateToken(customer);
+            return new CustomerLoginResponseDto
+            {
+                UserId = customer.Id,
+                FirstName = customer.FirstName,
+                Role = customer.Role,
+                Token = token,
+                Email = customer.Email,
+            };
         }
 
         public async Task<Customer?> RegisterAsync(CustomerDto request)
@@ -61,6 +94,7 @@ namespace Infrastructure.Services
                 request.Password
             );
 
+            customer.Role = "USER";
             customer.Email = request.Email;
             customer.PasswordHash = hashedPassword;
             customer.PhoneNumber = request.PhoneNumber;

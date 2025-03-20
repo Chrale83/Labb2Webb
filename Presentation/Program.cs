@@ -1,6 +1,9 @@
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using MudBlazor.Services;
 using Presentation.Components;
 using Presentation.DTOs;
+using Presentation.Handlers;
 using Presentation.States;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,11 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
-//builder.Services.AddSingleton(sp => new HttpClient
-//{
-//    BaseAddress = new Uri("https://localhost:7262"),
-//});
-
+//builder.Services.AddScoped<ProtectedSessionStorage>();
+//builder.Services.AddScoped<AuthTokenHandler>();
 builder.Services.AddSingleton<AppState>();
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient(
@@ -21,7 +21,13 @@ builder.Services.AddHttpClient(
     {
         client.BaseAddress = new Uri("https://localhost:7262");
     }
-);
+)
+/*.AddHttpMessageHandler<AuthTokenHandler>()*/;
+;
+
+builder.Services.AddBlazoredLocalStorage();
+
+builder.Services.AddAuthorizationCore();
 
 var app = builder.Build();
 
@@ -51,6 +57,9 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+//app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
