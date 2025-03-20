@@ -78,7 +78,7 @@ namespace Infrastructure.Services
             };
         }
 
-        public async Task<Customer?> RegisterAsync(CustomerDto request)
+        public async Task<Customer?> RegisterAsync(CustomerRegisterDto request)
         {
             var response = await _authRepository.CheckIfRegistred(request);
 

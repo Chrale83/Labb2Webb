@@ -17,7 +17,7 @@ namespace API.Controllers
             _productService = productService;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public async Task<IActionResult> CreateProduct(ProductDto productDto)
         {
@@ -60,7 +60,7 @@ namespace API.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "ADMIN")]
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto productUpdateDto)

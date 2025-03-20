@@ -19,6 +19,8 @@ namespace Infrastructure.Extensions
             return result;
         }
 
+        //public static CustomerRegisterDto
+
         public static IEnumerable<ProductDto> ProductsToDto(this IEnumerable<Product> products)
         {
             var newList = new List<ProductDto>();

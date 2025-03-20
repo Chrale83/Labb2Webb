@@ -11,7 +11,8 @@ namespace Presentation.Components.Pages
         private HttpClient? _httpClient;
 
         [SupplyParameterFromForm]
-        public CustomerNew? Customer { get; set; }
+        public NewCustomer Customer { get; set; }
+
         public CustomerDTO? CustomerDTO { get; set; }
 
         private async Task RegisterCustomerSubmit()

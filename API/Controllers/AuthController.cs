@@ -18,7 +18,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<Customer>> Register(CustomerDto request)
+        public async Task<ActionResult<Customer>> Register(CustomerRegisterDto request)
         {
             var customer = await _authService.RegisterAsync(request);
             if (customer == null)

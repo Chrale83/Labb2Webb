@@ -15,7 +15,7 @@ namespace Infrastructure.Repositories
             _context = context;
         }
 
-        public async Task<bool> CheckIfRegistred(CustomerDto request)
+        public async Task<bool> CheckIfRegistred(CustomerRegisterDto request)
         {
             return (await _context.Customers.AnyAsync(C => C.Email == request.Email));
         }
