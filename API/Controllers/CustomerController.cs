@@ -39,6 +39,18 @@ namespace API.Controllers
             return Forbid("du har ingen behörighet");
         }
 
+        [Authorize(Roles = "ADMIN")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CustomerProfileDto>>> GetCustomers()
+        {
+            var customers = await _customerService.GetCustomersAsync();
+            if (!customers.Any())
+            {
+                return NoContent();
+            }
+            return Ok(customers);
+        }
+
         [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateCustomer(CustomerEditDto customerEditDto)
@@ -62,7 +74,15 @@ namespace API.Controllers
         [HttpDelete]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            return Ok();
+            var response = _customerService.DeleteCustomerAsync(id);
+            if (response.IsCompletedSuccessfully)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound(response);
+            }
         }
     }
 }

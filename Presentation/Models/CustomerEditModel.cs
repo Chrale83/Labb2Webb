@@ -2,8 +2,10 @@
 
 namespace Presentation.Models
 {
-    public class CustomerEdit
+    public class CustomerEditModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "Förnamn måste fyllas i")]
         public string FirstName { get; set; } = string.Empty;
 

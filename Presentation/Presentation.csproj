@@ -7,14 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Components\Pages\CustomerPages\**" />
+    <Content Remove="Components\Pages\CustomerPages\**" />
+    <EmbeddedResource Remove="Components\Pages\CustomerPages\**" />
+    <None Remove="Components\Pages\CustomerPages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazor.Bootstrap" Version="3.3.1" />
     <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
     <PackageReference Include="MudBlazor" Version="8.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Components\Pages\CustomerPages\" />
   </ItemGroup>
 
 </Project>

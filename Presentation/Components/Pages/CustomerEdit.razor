@@ -1,13 +1,76 @@
-﻿<h3>CustomerEdit</h3>
+﻿@page "/customeredit"
+@rendermode InteractiveServer
 
 
-<EditForm>
+<h3>CustomerEdit</h3>
 
 
+<EditForm Model="EditedCustomer"
+		  OnValidSubmit="@EditCustomerSubmit"
+		  Enhance
+		  method="post"
+		  FormName="RegisterNewCustomer">
+
+
+    <div class="row mb-2 gx-1">
+
+        <div class="col-4 pr-4">
+
+            <label for="firstName" class="col-form-label fw-semibold">Förnamn:</label>
+            <InputText id="firstName" class="form-control w-75" @bind-Value="@EditedCustomer.FirstName" placeholder="Skriv in förnamn"></InputText>
+            <ValidationMessage For="@(() => EditedCustomer.FirstName)" />
+        </div>
+
+        <div class="col-4">
+
+            <label for="lastName" class="col-form-label fw-semibold">Efternamn:</label>
+            <InputText id="lastName" class="form-control w-75" @bind-Value="@EditedCustomer.LastName" placeholder="Skriv in ditt efternamn"></InputText>
+            <ValidationMessage For="@(() => EditedCustomer.LastName)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 gx-1">
+
+        <div class="col-4 pr-4">
+
+            <label for="streetname" class="col-form-label fw-semibold">Gatuadress:</label>
+            <InputText id="streetname" class="form-control w-75" @bind-Value="@EditedCustomer.StreetName" placeholder="Skriv in förnamn"></InputText>
+            <ValidationMessage For="@(() => EditedCustomer.StreetName)" />
+        </div>
+
+        <div class="col-4">
+
+            <label for="streetnumber" class="col-form-label fw-semibold">Gatunummer:</label>
+            <InputText id="streetnumber" inputmode="numeric" class="form-control w-25" @bind-Value="@EditedCustomer.StreetNumber" placeholder="Skriv in din gatuadress"></InputText>
+            <ValidationMessage For="@(() => EditedCustomer.StreetNumber)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 gx-1">
+
+        <div class="col-4 pr-4">
+
+            <label for="city" class="col-form-label fw-semibold">Stad:</label>
+            <InputText id="city" class="form-control w-75" @bind-Value="@EditedCustomer.City" placeholder="Skriv in vilken stad"></InputText>
+            <ValidationMessage For="@(() => EditedCustomer.FirstName)" />
+        </div>
+    </div>
+
+    <div class="row mb-3 gx-1">
+
+        <div class="col-4 pr-4">
+
+            <label for="phonenumber" class="col-form-label fw-semibold">Mobilnummer:</label>
+            <InputText id="phonenumber" class="form-control w-75" inputmode="numeric" @bind-Value="@EditedCustomer.PhoneNumber" placeholder="Skriv in ditt telefonnummer"></InputText>
+            <ValidationMessage For="@(() => EditedCustomer.PhoneNumber)" />
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Spara ändringar</button>
+    <button type="Button" @onclick="@UndoCustomerEditSubmit" class="btn btn-primary">Ångra ändringar</button>
+
+	
 
 
 </EditForm>
 
-@code {
 
-}

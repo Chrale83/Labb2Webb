@@ -15,9 +15,9 @@ namespace Infrastructure.Services
             _repository = repository;
         }
 
-        public Task<bool> DeleteCustomerAsync(int id)
+        public async Task<bool> DeleteCustomerAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _repository.DeleteAsync(id);
         }
 
         public async Task<CustomerProfileDto> GetCustomerByIdAsync(int id)
@@ -37,9 +37,9 @@ namespace Infrastructure.Services
             return DTO;
         }
 
-        public Task<IEnumerable<CustomerProfileDto>> GetCustomersAsync()
+        public async Task<IEnumerable<CustomerProfileDto>> GetCustomersAsync()
         {
-            throw new NotImplementedException();
+            return (await _repository.GetAllAsync()).CustomersToDto();
         }
 
         public Task<IEnumerable<CustomerRegisterDto>> SearchCustomersAsynch(string search)

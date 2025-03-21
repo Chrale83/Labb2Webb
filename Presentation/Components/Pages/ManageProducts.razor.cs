@@ -42,10 +42,6 @@ namespace Presentation.Components.Pages
                     break;
                 case >= 2:
                     await ResponseSearchProducts(searchWord);
-                    //Products =
-                    //    await _httpClient.GetFromJsonAsync<List<ProductDTO>>(
-                    //        $"/api/products/search?searchWord={searchWord}"
-                    //    ) ?? new();
 
                     break;
             }
@@ -70,22 +66,6 @@ namespace Presentation.Components.Pages
             }
             else { }
         }
-
-        //private bool resetValueOnEmptyText;
-        //private bool coerceText;
-        //private bool coerceValue;
-        //private bool selectedOnTab;
-        //private string value2;
-
-        //private async Task<IEnumerable<string>> SearchProduct(string value, CancellationToken token)
-        //{
-        //    if (string.IsNullOrWhiteSpace(value))
-        //        return new List<string>();
-
-        //    return Products
-        //        .Where(p => p.Name.Contains(value, StringComparison.InvariantCultureIgnoreCase))
-        //        .Select(p => p.Name);
-        //}
 
         protected override async Task OnInitializedAsync()
         {

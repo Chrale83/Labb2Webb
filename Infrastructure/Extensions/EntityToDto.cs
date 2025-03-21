@@ -42,5 +42,31 @@ namespace Infrastructure.Extensions
 
             return newList;
         }
+
+        public static IEnumerable<CustomerProfileDto> CustomersToDto(
+            this IEnumerable<Customer> entity
+        )
+        {
+            var dtoCustomer = new List<CustomerProfileDto>();
+
+            foreach (var customer in entity)
+            {
+                dtoCustomer.Add(
+                    new CustomerProfileDto
+                    {
+                        Id = customer.Id,
+                        FirstName = customer.FirstName,
+                        LastName = customer.LastName,
+                        Email = customer.Email,
+                        PhoneNumber = customer.PhoneNumber,
+                        City = customer.City,
+                        StreetName = customer.StreetName,
+                        StreetNumber = customer.StreetNumber,
+                    }
+                );
+            }
+
+            return dtoCustomer;
+        }
     }
 }

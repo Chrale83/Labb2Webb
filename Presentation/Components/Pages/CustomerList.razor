@@ -1,0 +1,40 @@
+﻿
+@using Presentation.Models
+@using MudBlazor
+@rendermode InteractiveServer
+@inject IDialogService DialogService
+@inject NavigationManager Navigation
+@page "/customerlist"
+
+<h3>CustomerList</h3>
+
+<MudTable T="CustomerProfileModel"
+          Items="@CustomerProfiles"
+          Hover="true"
+          Breakpoint="Breakpoint.Sm"
+          @ref="mudTable"
+          RowClass="cursor-pointer"
+          @bind-SelectedItem="SelectedCustomer">
+
+    <HeaderContent>
+        <MudTh>Namn</MudTh>
+        <MudTh>Email</MudTh>
+        <MudTh>Telefon nummer</MudTh>
+        <MudTh>Adress</MudTh>
+        
+        
+        
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.FullName</MudTd>
+        <MudTd DataLabel="Price">@context.Email kr</MudTd>
+        <MudTd DataLabel="Price">@context.PhoneNumber kr</MudTd>
+        <MudTd DataLabel="Price">@context.FullAdress kr</MudTd>
+        
+        
+        
+
+    </RowTemplate>
+</MudTable>
+@* <MudText Class="text-bg-danger mt-2 border-black text-center">@message</MudText> *@

@@ -1,14 +1,13 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using Blazored.LocalStorage;
+﻿using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using Presentation.Extensions;
 using Presentation.Models;
 using Presentation.States;
 
 namespace Presentation.Components.Pages
 {
-    public partial class CustomerEdit
+    public partial class CustomerList
     {
         [Inject]
         public AppState? AppState { get; set; }
@@ -19,8 +18,11 @@ namespace Presentation.Components.Pages
         [Inject]
         public IHttpClientFactory? httpClientFactory { get; set; }
         public HttpClient? httpClient { get; set; }
-        public CustomerEditModel? EditedCustomer { get; set; } = new();
-        private bool firstRender = true;
+        public List<CustomerProfileModel>? CustomerProfiles { get; set; } = new();
+        public CustomerProfileModel? SelectedCustomer { get; set; } = new();
+        private MudTable<CustomerProfileModel>? mudTable;
+
+        //private bool firstRender = true;
 
         protected override void OnInitialized()
         {
@@ -32,24 +34,13 @@ namespace Presentation.Components.Pages
             if (firstRender)
             {
                 await httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
-                EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
-                    $"/api/customer/{AppState.UserInfo.UserId}"
+                CustomerProfiles = await httpClient.GetFromJsonAsync<List<CustomerProfileModel>>(
+                    "/api/customer"
                 );
-                firstRender = true;
+
+                firstRender = false;
                 StateHasChanged();
             }
-        }
-
-        private async Task EditCustomerSubmit()
-        {
-            await httpClient.PutAsJsonAsync($"/api/customer/", EditedCustomer);
-        }
-
-        private async Task UndoCustomerEditSubmit()
-        {
-            EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
-                $"/api/customer/{AppState.UserInfo.UserId}"
-            );
         }
     }
 }

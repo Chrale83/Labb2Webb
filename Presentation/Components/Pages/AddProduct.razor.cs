@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
+using Presentation.Extensions;
 using Presentation.States;
 
 namespace Presentation.Components.Pages
@@ -9,6 +11,9 @@ namespace Presentation.Components.Pages
         [Inject]
         public IHttpClientFactory HttpClientFactory { get; set; } = default!;
         private HttpClient? _httpClient;
+
+        [Inject]
+        public ILocalStorageService? LocalStorage { get; set; }
 
         [Inject]
         public AppState? AppState { get; set; }
@@ -33,6 +38,8 @@ namespace Presentation.Components.Pages
                 await AppState.InitializeAsync(_httpClient);
             }
             Categories = AppState.Categories;
+
+            await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
         }
 
         private void HandleInvalidSubmit()
@@ -44,9 +51,15 @@ namespace Presentation.Components.Pages
         private async Task HandleValidSubmit()
         {
             var response = await _httpClient.PostAsJsonAsync("api/products", Product);
-            statusClass = "alert-success";
-            message = "Product added to database";
-            isProductSaved = true;
+            if (response.IsSuccessStatusCode)
+            {
+                statusClass = "alert-success";
+                message = "Produkten är tillagd i listan";
+                isProductSaved = true;
+            }
+
+            message = "Nåt gick fel";
+            statusClass = "alert-danger";
         }
     }
 }
