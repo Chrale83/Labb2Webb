@@ -26,28 +26,6 @@ namespace Presentation.Components.Pages
             _httpClient = HttpClientFactory.CreateClient("MyAPI");
         }
 
-        //private bool isRendered = false;
-
-        //protected override async Task OnAfterRenderAsync(bool firstRender)
-        //{
-        //    if (firstRender)
-        //    {
-        //        await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
-
-        //        var token = await LocalStorage.GetItemAsync<string>("authToken");
-        //        if (!string.IsNullOrEmpty(token))
-        //        {
-        //            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-        //                "Bearer",
-        //                token
-        //            );
-        //        }
-
-        //        isRendered = true;
-        //        StateHasChanged(); // För att UI ska uppdateras
-        //    }
-        //}
-
         private string message = "Inte testat än";
 
         private async Task CheckAuth()
@@ -90,7 +68,7 @@ namespace Presentation.Components.Pages
             }
             else
             {
-                // Om det inte går att logga in... Fix later!
+                message = "Fel användarnamn eller lösenord";
             }
         }
     }

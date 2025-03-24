@@ -31,6 +31,9 @@ namespace Presentation.Components.Pages
         private async void SearchProducts(ChangeEventArgs input)
         {
             var searchWord = input.Value?.ToString();
+
+            await Task.Delay(1000);
+
             var counterChar = searchWord.Length;
 
             switch (counterChar)
