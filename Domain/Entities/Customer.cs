@@ -32,6 +32,6 @@ namespace Domain.Entities
 
         public string Role { get; set; } = string.Empty;
 
-        public ICollection<OrderHistory> OrderHistories { get; set; } = new List<OrderHistory>();
+        public ICollection<Order> OrderHistories { get; set; } = new List<Order>();
     }
 }

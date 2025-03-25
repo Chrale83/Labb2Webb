@@ -20,7 +20,6 @@ namespace Domain.Entities
         [ForeignKey(nameof(Category))]
         public int CategoryId { get; set; }
         public Category Category { get; set; }
-
-        public ICollection<OrderHistory> OrderHistories { get; set; } = new List<OrderHistory>();
+        public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
 }

@@ -1,7 +1,9 @@
-﻿using Blazored.LocalStorage;
+﻿using System.Net.Http;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
 using Presentation.Extensions;
+using Presentation.Models;
 using Presentation.States;
 
 namespace Presentation.Components.Pages
@@ -26,6 +28,7 @@ namespace Presentation.Components.Pages
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
         protected bool isProductSaved = false;
+        protected bool firstRender = true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -40,6 +43,15 @@ namespace Presentation.Components.Pages
             Categories = AppState.Categories;
 
             await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender)
+            {
+                await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
+                firstRender = true;
+            }
         }
 
         private void HandleInvalidSubmit()

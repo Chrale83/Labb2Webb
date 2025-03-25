@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Domain.Entities
 {
-    public class OrderHistory
+    public class Order
     {
         [Key]
         public int Id { get; set; }
@@ -12,11 +13,11 @@ namespace Domain.Entities
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
-        [ForeignKey(nameof(Product))]
-        public int ProductId { get; set; }
-        public Product Product { get; set; }
-
         [Required]
         public DateTime PurchaseDate { get; set; }
+
+        public int TotalPrice { get; set; }
+
+        public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
     }
 }

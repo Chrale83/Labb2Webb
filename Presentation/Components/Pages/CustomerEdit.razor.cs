@@ -21,6 +21,7 @@ namespace Presentation.Components.Pages
         public HttpClient? httpClient { get; set; }
         public CustomerEditModel? EditedCustomer { get; set; } = new();
         private bool firstRender = true;
+        private string message = "string.Empty";
 
         protected override void OnInitialized()
         {
@@ -43,6 +44,10 @@ namespace Presentation.Components.Pages
         private async Task EditCustomerSubmit()
         {
             await httpClient.PutAsJsonAsync($"/api/customer/", EditedCustomer);
+            message = "Ändringar har sparats";
+            StateHasChanged();
+            await Task.Delay(3000);
+            message = string.Empty;
         }
 
         private async Task UndoCustomerEditSubmit()
@@ -50,6 +55,10 @@ namespace Presentation.Components.Pages
             EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
                 $"/api/customer/{AppState.UserInfo.UserId}"
             );
+            message = "uppgifter har återställts";
+            StateHasChanged();
+            await Task.Delay(3000);
+            message = string.Empty;
         }
     }
 }

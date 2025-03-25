@@ -1,9 +1,7 @@
 ﻿@page "/customeredit"
 @rendermode InteractiveServer
 
-
-<h3>CustomerEdit</h3>
-
+<h3>Uppdatera dina uppgifter</h3>
 
 <EditForm Model="EditedCustomer"
 		  OnValidSubmit="@EditCustomerSubmit"
@@ -65,12 +63,9 @@
             <ValidationMessage For="@(() => EditedCustomer.PhoneNumber)" />
         </div>
     </div>
+    <div class="mb-2">
     <button type="submit" class="btn btn-primary">Spara ändringar</button>
     <button type="Button" @onclick="@UndoCustomerEditSubmit" class="btn btn-primary">Ångra ändringar</button>
-
-	
-
-
+    <div class="mt-2"><p class="text-success">@message</p></div>
+</div>
 </EditForm>
-
-

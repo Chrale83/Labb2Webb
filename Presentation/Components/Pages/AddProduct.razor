@@ -6,7 +6,7 @@
 	
 
 
-<h3>Add Product</h3>
+<h3>Lägg till ny produkt</h3>
 
 <EditForm Model="Product"
 		  OnInvalidSubmit="@HandleInvalidSubmit"
@@ -20,7 +20,7 @@
 	<ValidationSummary></ValidationSummary>
 
 	<div class="row mb-3">
-		<label for="name" class="col-form-label col-md-3">Product Name:</label>
+		<label for="name" class="col-form-label col-md-3">Produktens namn:</label>
 		<div class="col-md-8">
 			<InputText id="productName" class="form-control col-md-8" @bind-Value="@Product.Name" placeholder="Enter product name"></InputText>
 		</div>
@@ -28,7 +28,7 @@
 	</div>
 
 	<div class="row mb-3">
-		<label for="description" class="col-form-label col-md-3">Product description:</label>
+		<label for="description" class="col-form-label col-md-3">Produkt beskrivning:</label>
 		<div class="col-md-8">
 			<InputText id="productDescription" class="form-control col-md-8" @bind-Value="@Product.Description" placeholder="Enter product description"></InputText>
 		</div>
@@ -38,7 +38,7 @@
 	
 
 	<div class="row mb-3">
-		<label for="category" class="col-form-label col-md-3">Product price:</label>
+		<label for="category" class="col-form-label col-md-3">Pris:</label>
 		<div class="col-md-8">
 			<InputNumber id="productPrice" class="form-control col-md-8" min="0" @bind-Value="@Product.Price"></InputNumber>
 		</div>
@@ -46,7 +46,7 @@
 	</div>
 
 	<div class="row mb-3">
-		<label for="category" class="col-form-label col-md-3">Product Category:</label>
+		<label for="category" class="col-form-label col-md-3">Kategori:</label>
 		<div class="col-md-8">
 			<InputSelect id="productCategories" class="form-control col-md-8" @bind-Value="@Product.CategoryId" placeholder="Enter product price">
 				@foreach (var category in Categories)
@@ -58,14 +58,14 @@
 	</div>
 
 	<div class="row mb-3">
-		<label for="price" class="col-form-label col-md-3">Product in stock:</label>
+		<label for="price" class="col-form-label col-md-3">I lager:</label>
 		<div class="col-md-8">
-			<InputCheckbox id="productStatus" @bind-Value="@Product.Status"></InputCheckbox><span class="ms-2">If in stock checked</span>
+			<InputCheckbox id="productStatus" @bind-Value="@Product.Status"></InputCheckbox><span class="ms-2">Är den i lager</span>
 		</div>
 	</div>
 
 	<div>
-		<button type="submit" class="btn btn-outline-primary ms-1">Submit</button>
+		<button type="submit" class="btn btn-outline-primary ms-1">Lägg till</button>
 	</div>
 
 </EditForm>

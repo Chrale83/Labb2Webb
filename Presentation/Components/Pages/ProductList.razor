@@ -1,0 +1,48 @@
+﻿@using DTOs
+@using System.Net.Http.Json
+@using MudBlazor
+@inject NavigationManager navigationManager
+@page "/productlist"
+@rendermode InteractiveServer
+
+<h3>Produkter att köpa</h3>
+
+<MudTable T="ProductDTO"
+          Items="@Products"
+          Hover="true"
+          Breakpoint="Breakpoint.Sm"
+          @ref="mudTable"
+          RowClass="cursor-pointer"
+          @bind-SelectedItem="SelectedProduct"
+          OnRowClick="@OnRowClick"
+>   
+          
+
+    <HeaderContent>
+        <MudTh>Namn</MudTh>
+        <MudTh>Pris</MudTh>
+        <MudTh>Kategori</MudTh>
+        <MudTh>Lager status</MudTh>
+
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="Price">@context.Price kr</MudTd>
+        <MudTd DataLabel="Category">
+            @Categories.Where(c => c.Id == context.CategoryId).Select(c => c.Name).FirstOrDefault()
+        </MudTd>
+        <MudTd DataLabel="Status">
+            @if (context.Status)
+            {
+                <span>I lager</span>
+            }
+            else
+            {
+                <span>Ej i lager</span>
+            }
+        </MudTd>
+
+    </RowTemplate>
+</MudTable>
+
+

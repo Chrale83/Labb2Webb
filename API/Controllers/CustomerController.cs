@@ -65,9 +65,9 @@ namespace API.Controllers
                 {
                     return Ok();
                 }
-                return NotFound();
+                return NotFound("Något är fel med id matchningen");
             }
-            return Forbid("du har ingen behörighet till detta");
+            return Forbid();
         }
 
         [Authorize(Roles = "ADMIN")]

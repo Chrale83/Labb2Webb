@@ -45,34 +45,6 @@ namespace Presentation.Extensions
             await Task.Delay(10);
         }
 
-        //public static async Task SaveTokenToLocalStorage(
-        //    this HttpClient httpClient,
-        //    string token,
-        //    ILocalStorageService localStorage
-        //)
-        //{
-        //    await localStorage.SetItemAsync("authToken", token);
-        //    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-        //        "Bearer",
-        //        token
-        //    );
-        //}
-
-        //public static async Task SetTokenToHttpClientFromLStorage(
-        //    this HttpClient httpClient,
-        //    ILocalStorageService localStorage
-        //)
-        //{
-        //    var token = await localStorage.GetItemAsync<string>("authToken");
-        //    if (!string.IsNullOrEmpty(token))
-        //    {
-        //        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-        //            "Bearer",
-        //            token
-        //        );
-        //    }
-        //}
-
         public static async Task SetTokenToHttpClientFromLStorage(
             this HttpClient httpClient,
             ILocalStorageService localStorage
