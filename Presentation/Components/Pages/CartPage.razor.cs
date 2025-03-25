@@ -42,7 +42,7 @@ namespace Presentation.Components.Pages
             totalSum = CartService.Items.Sum(i => i.Product.Price * i.Quantity).ToString("C");
         }
 
-        public async Task SendOrderSubmitAsync()
+        public async void SendOrderSubmit()
         {
             OrderDTO newOrder = new OrderDTO();
 
