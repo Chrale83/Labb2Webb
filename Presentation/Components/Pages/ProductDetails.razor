@@ -1,6 +1,66 @@
 ﻿@rendermode InteractiveServer
 @page "/productdetail"
 
-<h3>ProductDetails</h3>
 
-@* <div>@SelectedProduct.Name</div> *@
+
+@if (!IsAddedToCart)
+{
+    
+
+<h3 class="mb-4">Produktdetaljer</h3>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title">@SelectedProduct.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Pris: @SelectedProduct.Price.ToString("C")</h6>
+        <p class="card-text">@SelectedProduct.Description</p>
+
+        <span class="badge @(SelectedProduct.Status ? "bg-success" : "bg-danger")">
+            @(SelectedProduct.Status ? "I lager" : "Ej i lager")
+        </span>
+    </div>
+
+</div>
+@if (SelectedProduct.Status)
+{
+<div class="dropdown mt-2">
+    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        @SelectedQuantity.ToString() St
+    </button>
+    <ul class="dropdown-menu">
+        @foreach (var quantity in SelectedQuantityOfProducts)
+        {
+            <li>
+                <a class="dropdown-item"  @onclick="() => SelectQuantity(quantity)">
+                    @quantity <span>St</span>
+                </a>
+            </li>
+        }
+    </ul>
+</div>
+        <button type="button" @onclick="PutInCart" class="btn btn-outline-primary mt-2">Lägg till produkter i varukorgen</button>
+}
+else
+    {
+        <div>
+        <NavLink class="badge bg-success text-decoration-none" href="/productlist">
+            Gå tillbaka till produktlistan
+        </NavLink>
+        </div>
+    }
+
+}
+else{
+    <div>
+    <p class="text-dark">@SelectedProduct.Name är tillagd till varukorgen</p>
+        <NavLink class="badge bg-success text-decoration-none" href="/cartpage">
+            Gå till varukorgen
+        </NavLink>
+        <NavLink class="badge bg-success text-decoration-none" href="/productlist">
+            Se mer produkter
+        </NavLink>
+    </div>
+}
+    
+
+

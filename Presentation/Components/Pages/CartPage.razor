@@ -1,0 +1,58 @@
+﻿@using DTOs
+@using System.Net.Http.Json
+@using MudBlazor
+@using Presentation.Models
+@rendermode InteractiveServer
+@page "/cartpage"
+<h3>Din Varukorg</h3>
+
+<MudTable T="ShoppingCartItemModel"
+          Items="@CartService.Items"
+          Hover="true"
+          Breakpoint="Breakpoint.Sm"
+          RowClass="cursor-pointer"
+          @ref="mudTable"
+          @bind-SelectedItem="SelectedProduct"
+          >
+
+    <HeaderContent>
+        <MudTh>Produkt</MudTh>
+        <MudTh>Kategori</MudTh>
+        <MudTh>Antal</MudTh>
+        <MudTh>Pris</MudTh>
+        <MudTh>Total pris</MudTh>
+    </HeaderContent>
+
+    <RowTemplate>
+        <MudTd DataLabel="Produkt">@context.Product.Name</MudTd>
+        <MudTd DataLabel="Kategori">
+            @Categories.FirstOrDefault(c => c.Id == context.Product.CategoryId)?.Name
+        </MudTd>
+        <MudTd DataLabel="Antal">@context.Quantity</MudTd>
+        <MudTd DataLabel="Pris">@context.Product.Price.ToString("C")</MudTd>
+        <MudTd DataLabel="totalpris">
+            @((context.Product.Price * context.Quantity).ToString("C"))
+        </MudTd>
+    </RowTemplate>
+</MudTable>
+<div class="mt-3 text-end fw-bold">
+    Totalsumma: @totalSum
+</div>
+<div>
+    @if (SelectedProduct != null)
+    {
+        
+    <button class="btn btn-outline-primary" type="button" @onclick="RemoveFromCart">Ta bort produkt</button>
+    }
+    @if (CartService.Items.Any())
+    {
+    <button class="btn btn-outline-primary" type="button" @onclick="SendOrderSubmit">skicka beställning</button>
+        
+    }
+</div>
+
+
+
+
+
+

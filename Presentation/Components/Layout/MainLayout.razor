@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 @rendermode InteractiveServer
 @using Extensions
+@using Presentation.Services
 @using States
 @using Blazored.LocalStorage
 @using Microsoft.AspNetCore.Components;
@@ -21,10 +22,18 @@
         <div class="top-row px-4" style="background-color:darkslategray">
             @if (appState.IsLoggedIn)
             {
-                <button class="nav-link" aria-hidden="true" style="color:whitesmoke" @onclick="Logout">Logga ut</button>
                 <NavLink class="nav-link" style="color:whitesmoke" href="customeredit">
                     <span style="color:whitesmoke" aria-hidden="true"></span> Konto
                 </NavLink>
+                <button class="nav-link ms-2" aria-hidden="true" style="color:whitesmoke" @onclick="Logout">Logga ut</button>
+                @if (appState.UserInfo.Role == "USER")
+                {
+                    <NavLink class="nav-link d-flex align-items-center" style="color:whitesmoke" href="cartpage">
+                        <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" class="me-1" />
+                        @CartService.Items.Sum(item => item.Quantity)
+                    </NavLink>
+                    
+                }
             }
             else {
 
@@ -49,6 +58,8 @@
 </div>
 
 @code {
+    [Inject]
+    public ShoppingCartService? CartService { get; set; }
     [Inject]
     public ILocalStorageService? LocalStorage { get; set; }
     [Inject]
@@ -75,6 +86,7 @@
     protected override async Task OnInitializedAsync()
     {
         _httpClient = HttpClientFactory.CreateClient("MyAPI");
+        CartService!.OnChange += StateHasChanged;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

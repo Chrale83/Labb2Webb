@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using MudBlazor.Services;
 using Presentation.Components;
 using Presentation.DTOs;
+using Presentation.Services;
 using Presentation.States;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 
 //builder.Services.AddScoped<ProtectedSessionStorage>();
 //builder.Services.AddScoped<AuthTokenHandler>();
+builder.Services.AddScoped<ShoppingCartService>();
 builder.Services.AddSingleton<AppState>();
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient(
