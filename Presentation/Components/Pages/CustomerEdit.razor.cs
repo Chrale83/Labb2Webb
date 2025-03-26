@@ -34,16 +34,16 @@ namespace Presentation.Components.Pages
             {
                 await httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
                 EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
-                    $"/api/customer/{AppState.UserInfo.UserId}"
+                    $"/api/customers/{AppState.UserInfo.UserId}"
                 );
-                firstRender = true;
+
                 StateHasChanged();
             }
         }
 
         private async Task EditCustomerSubmit()
         {
-            await httpClient.PutAsJsonAsync($"/api/customer/", EditedCustomer);
+            await httpClient.PutAsJsonAsync($"/api/customers/", EditedCustomer);
             message = "Ändringar har sparats";
             StateHasChanged();
             await Task.Delay(3000);
@@ -53,7 +53,7 @@ namespace Presentation.Components.Pages
         private async Task UndoCustomerEditSubmit()
         {
             EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
-                $"/api/customer/{AppState.UserInfo.UserId}"
+                $"/api/customers/{AppState.UserInfo.UserId}"
             );
             message = "uppgifter har återställts";
             StateHasChanged();

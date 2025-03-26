@@ -1,6 +1,10 @@
 ﻿@rendermode InteractiveServer
 @page "/editproductpages"
 
+@if (AppState.UserInfo.Role == "ADMIN")
+{
+	
+
 <h3>Edit Product</h3>
 
 <EditForm Model="SelectedProduct" 
@@ -14,16 +18,16 @@ OnValidSubmit="@HandleValidSubmit">
 <ValidationSummary></ValidationSummary>
 
 <div class="row mb-3">
-	<label for="name" class="col-form-label col-md-3">Name:</label>
+	<label for="name" class="col-form-label col-md-3">Namn</label>
 		<div class="col-md-8">
-			<InputText id="productName" class="form-control col-md-8" @bind-Value="@SelectedProduct.Name" placeholder="Enter product name"/>
+			<InputText id="productName" class="form-control col-md-8" @bind-Value="@SelectedProduct.Name" placeholder="Skriv in produktens namn"/>
 		</div>
 		<ValidationMessage class="offset-md-3" For="@( () => SelectedProduct.Name)" />
 </div>
 
 
 	<div class="row mb-3">
-		<label for="price" class="col-form-label col-md-3">Price:</label>
+		<label for="price" class="col-form-label col-md-3">Pris</label>
 		<div class="col-md-8">
 			<InputNumber id="price" class="form-control col-md-8" min="0" @bind-Value="@SelectedProduct.Price"></InputNumber>
 		</div>
@@ -31,7 +35,7 @@ OnValidSubmit="@HandleValidSubmit">
 	</div>
 
 	<div class="row mb-3">
-		<label for="category" class="col-form-label col-md-3">Category:</label>
+		<label for="category" class="col-form-label col-md-3">Kategori</label>
 		<div class="col-md-8">
 			<InputSelect id="productCategories" class="form-control col-md-8" @bind-Value="@SelectedProduct.CategoryId" placeholder="Enter product price">
 				@foreach (var category in Categories)
@@ -45,17 +49,24 @@ OnValidSubmit="@HandleValidSubmit">
 
 
 	<div class="row mb-3">
-		<label for="description" class="col-form-label col-md-3">Description:</label>
+		<label for="description" class="col-form-label col-md-3">Beskrivning:</label>
 		<div class="col-md-8">
-			<InputTextArea id="productDescription" class="form-control col-md-8" @bind-Value="@SelectedProduct.Description" placeholder="Enter product name" />
+			<InputTextArea id="productDescription" class="form-control col-md-8" @bind-Value="@SelectedProduct.Description" placeholder="Skriv in en beskrivning av produkten" />
 		</div>
 		<ValidationMessage class="offset-md-3" For="@( () => SelectedProduct.Description)" />
 	</div>
 	
 	<div class="row mb-3">
-		<label for="status" class="col-form-label col-md-3">In stock:</label>
+		<label for="status" class="col-form-label col-md-3"></label>
 		<div class="col-md-8">
-			<InputCheckbox id="status" @bind-Value="@SelectedProduct.Status"></InputCheckbox><span class="ms-2">If in stock checked</span>
+			<InputCheckbox id="status" @bind-Value="@SelectedProduct.Status"></InputCheckbox><span class="ms-2">@if (SelectedProduct.Status)
+				{
+					<span class="text-bg-success">I Lager</span>
+				}
+				else
+				{
+					<span class="text-bg-danger">Ej i Lager</span>
+				}</span>
 		</div>
 	</div>
 
@@ -66,3 +77,5 @@ OnValidSubmit="@HandleValidSubmit">
 
 
 </EditForm>
+}
+else{<h3>HÄR SKA DU INTE VARA IDA!!!!</h3>}

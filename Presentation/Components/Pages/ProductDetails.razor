@@ -21,7 +21,7 @@
     </div>
 
 </div>
-@if (SelectedProduct.Status)
+@if (SelectedProduct.Status && appState.UserInfo.Role == "USER")
 {
 <div class="dropdown mt-2">
     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -42,8 +42,8 @@
 }
 else
     {
-        <div>
-        <NavLink class="badge bg-success text-decoration-none" href="/productlist">
+        <div class="mb-2">
+        <NavLink class=" button border-2 bg-success text-decoration-none" href="/productlist">
             Gå tillbaka till produktlistan
         </NavLink>
         </div>
@@ -52,11 +52,12 @@ else
 }
 else{
     <div>
-    <p class="text-dark">@SelectedProduct.Name är tillagd till varukorgen</p>
-        <NavLink class="badge bg-success text-decoration-none" href="/cartpage">
+    <h2 class="text-dark">@SelectedProduct.Name</h2>
+        <p>är tillagd till varukorgen</p>
+        <NavLink class="btn bg-success " href="/cartpage">
             Gå till varukorgen
         </NavLink>
-        <NavLink class="badge bg-success text-decoration-none" href="/productlist">
+        <NavLink class="btn bg-success text-decoration-none" href="/productlist">
             Se mer produkter
         </NavLink>
     </div>

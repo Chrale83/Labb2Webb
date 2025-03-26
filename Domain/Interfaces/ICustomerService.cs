@@ -13,6 +13,6 @@ namespace Domain.Interfaces
 
         Task<bool> UpdateCustomerAsync(CustomerEditDto customerEditDto);
 
-        Task<IEnumerable<CustomerRegisterDto>> SearchCustomersAsynch(string search);
+        Task<IEnumerable<CustomerProfileDto>> SearchCustomersAsynch(string search);
     }
 }

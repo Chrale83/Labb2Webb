@@ -66,7 +66,7 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto productUpdateDto)
         {
             await _productService.UpdateProductAsync(id, productUpdateDto);
-            return Ok();
+            return Created();
         }
 
         [HttpGet("search")]

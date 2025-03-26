@@ -1,5 +1,9 @@
 ﻿@rendermode InteractiveServer
 @page "/addproduct"
+@if (AppState.UserInfo.Role == "ADMIN")
+{
+	
+
 
 @if (!isProductSaved)
 {
@@ -22,7 +26,7 @@
 	<div class="row mb-3">
 		<label for="name" class="col-form-label col-md-3">Produktens namn:</label>
 		<div class="col-md-8">
-			<InputText id="productName" class="form-control col-md-8" @bind-Value="@Product.Name" placeholder="Enter product name"></InputText>
+			<InputText id="productName" class="form-control col-md-8" @bind-Value="@Product.Name" placeholder="Skriv in produktens namn"></InputText>
 		</div>
 		<ValidationMessage class="offset-md-3" For="@(() => Product.Name)" />
 	</div>
@@ -30,7 +34,7 @@
 	<div class="row mb-3">
 		<label for="description" class="col-form-label col-md-3">Produkt beskrivning:</label>
 		<div class="col-md-8">
-			<InputText id="productDescription" class="form-control col-md-8" @bind-Value="@Product.Description" placeholder="Enter product description"></InputText>
+			<InputTextArea id="productDescription" class="form-control col-md-8" @bind-Value="@Product.Description" placeholder="Skriv in beskrivning av produkten"></InputTextArea>
 		</div>
 		<ValidationMessage class="offset-md-3" For="@(() => Product.Description)" />
 	</div>
@@ -81,3 +85,7 @@ else
 	</div>
 }
 
+}
+else {
+	<h3>HÄR SKA DU INTE VARA IDA!!!</h3>
+}

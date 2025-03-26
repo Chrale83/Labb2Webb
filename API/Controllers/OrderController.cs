@@ -27,7 +27,7 @@ namespace API.Controllers
             int userIdFromToken = int.Parse(userIdClaim);
             await _orderService.CreateOrderAsync(orderDTO, userIdFromToken);
 
-            return Ok();
+            return Created();
         }
     }
 }

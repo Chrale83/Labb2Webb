@@ -26,7 +26,7 @@ namespace Presentation.Components.Pages
             _httpClient = HttpClientFactory.CreateClient("MyAPI");
         }
 
-        private string message = "Inte testat än";
+        private string message = string.Empty;
 
         private async Task CheckAuth()
         {

@@ -28,7 +28,6 @@ namespace Presentation.Components.Pages
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
         protected bool isProductSaved = false;
-        protected bool firstRender = true;
 
         protected override async Task OnInitializedAsync()
         {
@@ -41,16 +40,13 @@ namespace Presentation.Components.Pages
                 await AppState.InitializeAsync(_httpClient);
             }
             Categories = AppState.Categories;
-
-            await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            if (firstRender)
+            if (firstRender && AppState.UserInfo.Role == "ADMIN")
             {
                 await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
-                firstRender = true;
             }
         }
 

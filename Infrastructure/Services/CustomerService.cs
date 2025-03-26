@@ -9,10 +9,15 @@ namespace Infrastructure.Services
     public class CustomerService : ICustomerService
     {
         private readonly IRepository<Customer> _repository;
+        private readonly ICustomerRepository _customerRepository;
 
-        public CustomerService(IRepository<Customer> repository)
+        public CustomerService(
+            IRepository<Customer> repository,
+            ICustomerRepository customerRepository
+        )
         {
             _repository = repository;
+            _customerRepository = customerRepository;
         }
 
         public async Task<bool> DeleteCustomerAsync(int id)
@@ -42,9 +47,28 @@ namespace Infrastructure.Services
             return (await _repository.GetAllAsync()).CustomersToDto();
         }
 
-        public Task<IEnumerable<CustomerRegisterDto>> SearchCustomersAsynch(string search)
+        public async Task<IEnumerable<CustomerProfileDto>> SearchCustomersAsynch(string search)
         {
-            throw new NotImplementedException();
+            var customerEntity = await _customerRepository.SearchForCustomer(search);
+            var customerDto = new List<CustomerProfileDto>();
+
+            foreach (var customer in customerEntity)
+            {
+                customerDto.Add(
+                    new CustomerProfileDto
+                    {
+                        Id = customer.Id,
+                        FirstName = customer.FirstName,
+                        LastName = customer.LastName,
+                        City = customer.City,
+                        StreetName = customer.StreetName,
+                        StreetNumber = customer.StreetNumber,
+                        Email = customer.Email,
+                        PhoneNumber = customer.PhoneNumber,
+                    }
+                );
+            }
+            return customerDto;
         }
 
         public async Task<bool> UpdateCustomerAsync(CustomerEditDto customerEditDto)

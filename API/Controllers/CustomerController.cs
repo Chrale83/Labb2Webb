@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using Domain.Dtos;
+using Domain.Entities;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,7 @@ using Presentation.DTOs;
 
 namespace API.Controllers
 {
-    [Route("api/customer")]
+    [Route("api/customers")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
@@ -83,6 +84,21 @@ namespace API.Controllers
             {
                 return NotFound(response);
             }
+        }
+
+        //[Authorize(Roles = "ADMIN")]
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<CustomerProfileDto>>> SearchForCustomer(
+            [FromQuery] string searchWord
+        )
+        {
+            var customers = await _customerService.SearchCustomersAsynch(searchWord);
+
+            if (!customers.Any())
+            {
+                return NoContent();
+            }
+            return Ok(customers);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
 using Presentation.Extensions;
 using Presentation.States;
@@ -14,6 +15,9 @@ namespace Presentation.Components.Pages
         private IHttpClientFactory HttpClientFactory { get; set; } = default!;
         private HttpClient? _httpClient;
 
+        [Inject]
+        public ILocalStorageService? LocalStorage { get; set; }
+
         [SupplyParameterFromForm]
         public ProductDTO? SelectedProduct { get; set; }
 
@@ -28,16 +32,14 @@ namespace Presentation.Components.Pages
             _httpClient = HttpClientFactory.CreateClient("MyAPI");
             Categories = AppState.Categories;
             SelectedProduct = AppState.SelectedProduct;
-            //OriginalProduct = new ProductUpdateDto(AppState.SelectedProduct);
+        }
 
-            //OriginalProduct = new ProductUpdateDto()
-            //{
-            //    Name = EditingProduct.Name,
-            //    CategoryId = EditingProduct.CategoryId,
-            //    Description = EditingProduct.Description,
-            //    Price = EditingProduct.Price,
-            //    Status = EditingProduct.Status,
-            //};
+        protected override async Task OnAfterRenderAsync(bool firstRender)
+        {
+            if (firstRender && AppState.UserInfo.Role == "ADMIN")
+            {
+                await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
+            }
         }
 
         private async Task HandleValidSubmit()

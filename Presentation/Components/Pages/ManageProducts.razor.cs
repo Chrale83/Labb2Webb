@@ -65,7 +65,7 @@ namespace Presentation.Components.Pages
             else if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
             {
                 Products = new();
-                message = "No products found";
+                message = "Ingen produkt hittades";
             }
             else { }
         }
