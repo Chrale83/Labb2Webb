@@ -4,6 +4,7 @@ using Blazored.LocalStorage;
 using Presentation.Extensions;
 using Presentation.Interfaces;
 using Presentation.Models;
+using Presentation.States;
 
 namespace Presentation.Services
 {
@@ -53,41 +54,21 @@ namespace Presentation.Services
             }
 
             return await httpClient.GetFromJsonAsync<List<CustomerProfileModel>>($"{customerUri}");
-
-            //switch (countChar)
-            //{
-            //    case 0:
-            //        return await httpClient.GetFromJsonAsync<List<CustomerProfileModel>>(
-            //            "/api/customers"
-            //        );
-
-            //    case >= 2:
-            //        var response = await httpClient.GetAsync(
-            //            $"/api/customers/search?searchWord={customerSearchQuery}"
-            //        );
-
-            //        if (response.StatusCode == HttpStatusCode.OK)
-            //        {
-            //            return await response.Content.ReadFromJsonAsync<
-            //                    List<CustomerProfileModel>
-            //                >() ?? new();
-            //        }
-            //        else if (response.StatusCode == HttpStatusCode.NoContent)
-            //        {
-            //            return new List<CustomerProfileModel>();
-            //        }
-
-            //        break;
         }
 
-        public Task<CustomerEditModel> GetCustomerToEdit()
+        public async Task<CustomerEditModel> GetCustomerToEdit(int userId)
         {
-            throw new NotImplementedException();
+            await httpClient.SetTokenToHttpClientFromLStorage(localStorage);
+            var tempObject = await httpClient.GetFromJsonAsync<CustomerEditModel>(
+                $"{customerUri}/{userId}"
+            );
+            return tempObject;
         }
 
-        public Task UpdateCustomer(CustomerEditModel customerEditModel)
+        public async Task UpdateCustomer(CustomerEditModel customerEditModel)
         {
-            throw new NotImplementedException();
+            await httpClient.SetTokenToHttpClientFromLStorage(localStorage);
+            await httpClient.PutAsJsonAsync($"{customerUri}", customerEditModel);
         }
     }
 }

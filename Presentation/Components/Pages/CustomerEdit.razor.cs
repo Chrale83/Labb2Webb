@@ -1,8 +1,5 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
-using Presentation.Extensions;
+﻿using Microsoft.AspNetCore.Components;
+using Presentation.Interfaces;
 using Presentation.Models;
 using Presentation.States;
 
@@ -14,52 +11,47 @@ namespace Presentation.Components.Pages
         public AppState? AppState { get; set; }
 
         [Inject]
-        public ILocalStorageService? LocalStorage { get; set; }
+        public ICustomerService? CustomerService { get; set; }
 
-        [Inject]
-        public IHttpClientFactory? httpClientFactory { get; set; }
-        public HttpClient? httpClient { get; set; }
         public CustomerEditModel? EditedCustomer { get; set; } = new();
-        private bool firstRender = true;
-        private string message = "string.Empty";
 
-        protected override void OnInitialized()
-        {
-            httpClient = httpClientFactory.CreateClient("MyAPI");
-        }
+        private string message = string.Empty;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
             if (firstRender)
             {
-                await httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
-                EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
-                    $"/api/customers/{AppState.UserInfo.UserId}"
-                );
-
-                StateHasChanged();
+                if (AppState.UserInfo.UserId is int userId)
+                {
+                    EditedCustomer = await CustomerService.GetCustomerToEdit(userId);
+                    StateHasChanged();
+                }
             }
         }
 
         private async Task EditCustomerSubmit()
         {
-            await httpClient.PutAsJsonAsync($"/api/customers/", EditedCustomer);
-            message = "Ändringar har sparats";
-            StateHasChanged();
-            await Task.Delay(3000);
-            message = string.Empty;
+            await CustomerService.UpdateCustomer(EditedCustomer);
+            await StatusMessage("Ändringar har sparats");
         }
 
         private async Task UndoCustomerEditSubmit()
         {
-            //Denna ska hämta igen
-            EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
-                $"/api/customers/{AppState.UserInfo.UserId}"
-            );
-            message = "uppgifter har återställts";
+            if (AppState.UserInfo.UserId is int userId)
+            {
+                EditedCustomer = await CustomerService.GetCustomerToEdit(userId);
+            }
+            await StatusMessage("uppgifter har återställts");
+            StateHasChanged();
+        }
+
+        private async Task StatusMessage(string newMessage)
+        {
+            message = newMessage;
             StateHasChanged();
             await Task.Delay(3000);
             message = string.Empty;
+            StateHasChanged();
         }
     }
 }
