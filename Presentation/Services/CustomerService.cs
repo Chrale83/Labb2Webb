@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Net;
+﻿using System.Net;
 using Blazored.LocalStorage;
 using Presentation.Extensions;
 using Presentation.Interfaces;
 using Presentation.Models;
-using Presentation.States;
 
 namespace Presentation.Services
 {
