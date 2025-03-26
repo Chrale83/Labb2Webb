@@ -20,7 +20,7 @@ namespace Presentation.Components.Pages
         [Parameter]
         public CustomerLoginDTO LoginCustomer { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             LoginCustomer = new();
             _httpClient = HttpClientFactory.CreateClient("MyAPI");

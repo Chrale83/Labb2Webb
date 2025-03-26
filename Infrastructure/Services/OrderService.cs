@@ -1,0 +1,37 @@
+﻿using Domain.Entities;
+using Domain.Interfaces;
+using Presentation.DTOs;
+
+namespace Infrastructure.Services
+{
+    public class OrderService : IOrderService
+    {
+        private readonly IOrderRepository _orderRepository;
+
+        public OrderService(IOrderRepository orderRepository)
+        {
+            _orderRepository = orderRepository;
+        }
+
+        public OrderService() { }
+
+        public async Task CreateOrderAsync(OrderDTO orderDto, int customerId)
+        {
+            var order = new Order
+            {
+                CustomerId = customerId,
+                PurchaseDate = orderDto.Ordertime,
+                TotalPrice = (int)orderDto.TotalCost,
+                OrderProducts = orderDto
+                    .ProductOrders.Select(po => new OrderProduct
+                    {
+                        ProductId = po.ProductId,
+                        Quantity = po.Quantity,
+                    })
+                    .ToList(),
+            };
+
+            await _orderRepository.CreateOrder(order, customerId);
+        }
+    }
+}

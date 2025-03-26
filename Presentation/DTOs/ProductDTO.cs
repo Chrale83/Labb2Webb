@@ -12,7 +12,7 @@ namespace Presentation.DTOs
         public string Name { get; set; }
 
         [Required(ErrorMessage = "Måste fylla i en beskrivning")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required(ErrorMessage = "Måste fylla i pris")]
         [Range(1, int.MaxValue, ErrorMessage = "Priset nåste vara mer än 0")]

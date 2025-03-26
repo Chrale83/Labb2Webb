@@ -69,9 +69,11 @@ namespace Presentation.Components.Pages
                 message = "Produkten är tillagd i listan";
                 isProductSaved = true;
             }
-
-            message = "Nåt gick fel";
-            statusClass = "alert-danger";
+            else
+            {
+                message = "Nåt gick fel";
+                statusClass = "alert-danger";
+            }
         }
     }
 }
