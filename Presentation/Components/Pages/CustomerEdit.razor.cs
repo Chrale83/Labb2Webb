@@ -52,6 +52,7 @@ namespace Presentation.Components.Pages
 
         private async Task UndoCustomerEditSubmit()
         {
+            //Denna ska hämta igen
             EditedCustomer = await httpClient.GetFromJsonAsync<CustomerEditModel>(
                 $"/api/customers/{AppState.UserInfo.UserId}"
             );
