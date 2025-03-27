@@ -1,7 +1,5 @@
-﻿using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
-using Presentation.Extensions;
 using Presentation.Interfaces;
 using Presentation.States;
 
@@ -15,17 +13,9 @@ namespace Presentation.Components.Pages
         [Inject]
         public AppState AppState { get; set; }
 
-        [Inject]
-        private IHttpClientFactory HttpClientFactory { get; set; } = default!;
-        private HttpClient? _httpClient;
-
-        [Inject]
-        public ILocalStorageService? LocalStorage { get; set; }
-
         [SupplyParameterFromForm]
         public ProductDTO? SelectedProduct { get; set; }
 
-        //public ProductUpdateDto? OriginalProduct { get; set; }
         public List<CategoryDTO> Categories { get; set; } = new();
         protected string message = string.Empty;
         protected string statusClass = string.Empty;
@@ -36,8 +26,6 @@ namespace Presentation.Components.Pages
             Categories = AppState.Categories;
             SelectedProduct = AppState.SelectedProduct;
         }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender) { }
 
         private async Task UpdateProduct()
         {

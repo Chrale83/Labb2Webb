@@ -8,6 +8,6 @@ namespace Presentation.Interfaces
         Task<IEnumerable<ProductDTO>> GetAllProductsAsync();
         Task DeleteProductByIDAsync(int id);
         Task<bool> UpdateProductAsync(int id, ProductUpdateDto productUpdateDto);
-        Task<IEnumerable<ProductDTO>> SearchProductAsync(string searchWord);
+        Task<List<ProductDTO>> SearchProductAsync(string searchWord, bool listHasProducts);
     }
 }

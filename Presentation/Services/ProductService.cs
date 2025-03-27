@@ -1,7 +1,9 @@
-﻿using Blazored.LocalStorage;
+﻿using System.Net;
+using Blazored.LocalStorage;
 using Presentation.DTOs;
 using Presentation.Extensions;
 using Presentation.Interfaces;
+using Presentation.Models;
 
 namespace Presentation.Services
 {
@@ -45,11 +47,28 @@ namespace Presentation.Services
             return await httpClient.GetFromJsonAsync<IEnumerable<ProductDTO>>($"{uri}");
         }
 
-        public async Task<IEnumerable<ProductDTO>> SearchProductAsync(string productQuery)
+        public async Task<List<ProductDTO>> SearchProductAsync(
+            string productQuery,
+            bool listHasProducts
+        )
         {
-            return await httpClient.GetFromJsonAsync<IEnumerable<ProductDTO>>(
-                $"{uri}/search?{productQuery}"
-            );
+            var countChar = productQuery.Length;
+
+            if (countChar >= 2)
+            {
+                var response = await httpClient.GetAsync($"{uri}/search?searchWord={productQuery}");
+
+                if (response.StatusCode == HttpStatusCode.OK)
+                {
+                    return await response.Content.ReadFromJsonAsync<List<ProductDTO>>() ?? new();
+                }
+                else if (response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    return new List<ProductDTO>();
+                }
+            }
+
+            return await httpClient.GetFromJsonAsync<List<ProductDTO>>($"{uri}");
         }
 
         public async Task<bool> UpdateProductAsync(int id, ProductUpdateDto productUpdateDto)

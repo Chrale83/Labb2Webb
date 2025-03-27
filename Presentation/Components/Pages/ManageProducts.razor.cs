@@ -3,12 +3,16 @@ using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using Presentation.Components.Dialogs;
 using Presentation.DTOs;
+using Presentation.Interfaces;
 using Presentation.States;
 
 namespace Presentation.Components.Pages
 {
     public partial class ManageProducts
     {
+        [Inject]
+        public IProductService? ProductService { get; set; }
+
         [Inject]
         private IHttpClientFactory? HttpClientFactory { get; set; } = default!;
         private HttpClient? _httpClient;
@@ -27,48 +31,67 @@ namespace Presentation.Components.Pages
         [Parameter]
         public string searchText { get; set; } = string.Empty;
         private string message = string.Empty;
+        private CancellationTokenSource? cts;
 
         private async void SearchProducts(ChangeEventArgs input)
         {
-            var searchWord = input.Value?.ToString();
-
-            await Task.Delay(1000);
-
-            var counterChar = searchWord.Length;
-
-            switch (counterChar)
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+            try
             {
-                case 0:
-                    Products =
-                        await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products")
-                        ?? new();
-                    break;
-                case >= 2:
-                    await ResponseSearchProducts(searchWord);
+                await Task.Delay(600, cts.Token);
+                var productQuery = input.Value?.ToString();
 
-                    break;
+                var listHaveProducts = Products.Any();
+
+                Products = await ProductService.SearchProductAsync(productQuery, listHaveProducts);
             }
+            catch (TaskCanceledException)
+            {
+                //Sökningen avbröts eller skrev för snabbt
+            }
+            StateHasChanged();
+
+            //var searchWord = input.Value?.ToString();
+
+            //await Task.Delay(1000);
+
+            //var counterChar = searchWord.Length;
+
+            //switch (counterChar)
+            //{
+            //    case 0:
+
+            //        awa Products =
+            //            await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products")
+            //            ?? new();
+            //        break;
+            //    case >= 2:
+            //        await ResponseSearchProducts(searchWord);
+
+            //        break;
+            //}
             StateHasChanged();
         }
 
-        public async Task ResponseSearchProducts(string searchWord)
-        {
-            var response = await _httpClient.GetAsync(
-                $"/api/products/search?searchWord={searchWord}"
-            );
+        //public async Task ResponseSearchProducts(string searchWord)
+        //{
+        //    var response = await _httpClient.GetAsync(
+        //        $"/api/products/search?searchWord={searchWord}"
+        //    );
 
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                Products = await response.Content.ReadFromJsonAsync<List<ProductDTO>>() ?? new();
-                message = string.Empty;
-            }
-            else if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-            {
-                Products = new();
-                message = "Ingen produkt hittades";
-            }
-            else { }
-        }
+        //    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        //    {
+        //        Products = await response.Content.ReadFromJsonAsync<List<ProductDTO>>() ?? new();
+        //        message = string.Empty;
+        //    }
+        //    else if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+        //    {
+        //        Products = new();
+        //        message = "Ingen produkt hittades";
+        //    }
+        //    else { }
+        //}
 
         protected override async Task OnInitializedAsync()
         {
