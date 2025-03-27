@@ -43,8 +43,7 @@ namespace API.Controllers
             return Ok(products);
         }
 
-        //[Authorize(Roles = "Admin")]
-        [Authorize]
+        [Authorize(Roles = "ADMIN")]
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
@@ -66,12 +65,13 @@ namespace API.Controllers
         public async Task<IActionResult> UpdateProduct(int id, ProductUpdateDto productUpdateDto)
         {
             await _productService.UpdateProductAsync(id, productUpdateDto);
-            return Created();
+            return Ok();
         }
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> SearchProductsAsync(
-            [FromQuery] string searchWord
+            [FromQuery] string searchWord,
+            int number
         )
         {
             var products = await _productService.SearchProductsAsync(searchWord);
@@ -81,13 +81,5 @@ namespace API.Controllers
             }
             return Ok(products);
         }
-
-        //[HttpPatch]
-        //[Route("{id}")]
-        //public async Task<IActionResult> UpdateProduct(int id, Dictionary<string, object> updates)
-        //{
-        //    await _productService.UpdateProduct(id, updates);
-        //    return Ok();
-        //}
     }
 }

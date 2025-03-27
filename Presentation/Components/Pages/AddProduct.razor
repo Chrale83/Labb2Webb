@@ -14,7 +14,7 @@
 
 <EditForm Model="Product"
 		  OnInvalidSubmit="@HandleInvalidSubmit"
-	OnValidSubmit="@HandleValidSubmit"
+	OnValidSubmit="@CreateProduct"
 	 
 	Enhance
 	method="post"
@@ -87,5 +87,5 @@ else
 
 }
 else {
-	<h3>HÄR SKA DU INTE VARA IDA!!!</h3>
+	<h3>Nu har du hamnat fel</h3>
 }

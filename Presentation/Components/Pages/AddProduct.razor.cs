@@ -3,6 +3,7 @@ using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
 using Presentation.Extensions;
+using Presentation.Interfaces;
 using Presentation.Models;
 using Presentation.States;
 
@@ -11,11 +12,7 @@ namespace Presentation.Components.Pages
     public partial class AddProduct
     {
         [Inject]
-        public IHttpClientFactory HttpClientFactory { get; set; } = default!;
-        private HttpClient? _httpClient;
-
-        [Inject]
-        public ILocalStorageService? LocalStorage { get; set; }
+        public IProductService? ProductService { get; set; }
 
         [Inject]
         public AppState? AppState { get; set; }
@@ -31,23 +28,11 @@ namespace Presentation.Components.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            _httpClient = HttpClientFactory.CreateClient("MyAPI");
-            isProductSaved = false;
             Product ??= new() { CategoryId = 1 };
-
-            if (AppState.Categories.Count == 0)
-            {
-                await AppState.InitializeAsync(_httpClient);
-            }
             Categories = AppState.Categories;
-        }
-
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender && AppState.UserInfo.Role == "ADMIN")
-            {
-                await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
-            }
+            //TODO
+            //
+            // Fixa så om appstate.categories är null hämta igen
         }
 
         private void HandleInvalidSubmit()
@@ -56,10 +41,11 @@ namespace Presentation.Components.Pages
             message = "Check your forms";
         }
 
-        private async Task HandleValidSubmit()
+        private async Task CreateProduct()
         {
-            var response = await _httpClient.PostAsJsonAsync("api/products", Product);
-            if (response.IsSuccessStatusCode)
+            var response = await ProductService.CreateProductAsync(Product);
+
+            if (response)
             {
                 statusClass = "alert-success";
                 message = "Produkten är tillagd i listan";
