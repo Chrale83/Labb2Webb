@@ -42,9 +42,9 @@ namespace Presentation.Services
             await httpClient.DeleteAsync($"{uri}/{id}");
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
+        public async Task<List<ProductDTO>> GetAllProductsAsync()
         {
-            return await httpClient.GetFromJsonAsync<IEnumerable<ProductDTO>>($"{uri}");
+            return await httpClient.GetFromJsonAsync<List<ProductDTO>>($"{uri}");
         }
 
         public async Task<List<ProductDTO>> SearchProductAsync(

@@ -14,15 +14,11 @@ namespace Presentation.Components.Pages
         public IProductService? ProductService { get; set; }
 
         [Inject]
-        private IHttpClientFactory? HttpClientFactory { get; set; } = default!;
-        private HttpClient? _httpClient;
-
-        [Inject]
         public AppState? appState { get; set; }
 
         private MudTable<ProductDTO>? mudTable;
         private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();
-        private List<ProductDTO> SearchedProducts { get; set; } = new List<ProductDTO>();
+
         public IEnumerable<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
 
         [Parameter]
@@ -32,6 +28,7 @@ namespace Presentation.Components.Pages
         public string searchText { get; set; } = string.Empty;
         private string message = string.Empty;
         private CancellationTokenSource? cts;
+        private bool isProductDeleted = false;
 
         private async void SearchProducts(ChangeEventArgs input)
         {
@@ -48,80 +45,23 @@ namespace Presentation.Components.Pages
             }
             catch (TaskCanceledException)
             {
-                //Sökningen avbröts eller skrev för snabbt
+                //Sökningen avbröts eller så skrev för snabbt
             }
-            StateHasChanged();
-
-            //var searchWord = input.Value?.ToString();
-
-            //await Task.Delay(1000);
-
-            //var counterChar = searchWord.Length;
-
-            //switch (counterChar)
-            //{
-            //    case 0:
-
-            //        awa Products =
-            //            await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products")
-            //            ?? new();
-            //        break;
-            //    case >= 2:
-            //        await ResponseSearchProducts(searchWord);
-
-            //        break;
-            //}
             StateHasChanged();
         }
 
-        //public async Task ResponseSearchProducts(string searchWord)
-        //{
-        //    var response = await _httpClient.GetAsync(
-        //        $"/api/products/search?searchWord={searchWord}"
-        //    );
-
-        //    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-        //    {
-        //        Products = await response.Content.ReadFromJsonAsync<List<ProductDTO>>() ?? new();
-        //        message = string.Empty;
-        //    }
-        //    else if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
-        //    {
-        //        Products = new();
-        //        message = "Ingen produkt hittades";
-        //    }
-        //    else { }
-        //}
-
         protected override async Task OnInitializedAsync()
         {
-            _httpClient = HttpClientFactory.CreateClient("MyAPI");
-            if (appState.Categories.Count == 0)
-            {
-                await appState.InitializeAsync(_httpClient);
-            }
             Categories = appState.Categories;
-
-            Products =
-                await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products") ?? new();
+            Products = await ProductService.GetAllProductsAsync();
         }
 
         private async Task DeleteProduct()
         {
             if (SelectedProduct != null)
             {
-                var token = await LocalStorage.GetItemAsync<string>("authToken");
-                if (!string.IsNullOrEmpty(token))
-                {
-                    _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
-                        "Bearer",
-                        token
-                    );
-                }
-
-                var response = await _httpClient.DeleteAsync($"api/products/{SelectedProduct.Id}");
-                if (response.IsSuccessStatusCode) { }
-                else { }
+                var productId = SelectedProduct.Id;
+                await ProductService.DeleteProductByIDAsync(productId);
             }
         }
 
@@ -148,7 +88,8 @@ namespace Presentation.Components.Pages
             if (!result.Canceled)
             {
                 await DeleteProduct();
-                Products = await _httpClient.GetFromJsonAsync<List<ProductDTO>>("/api/products");
+
+                Products = await ProductService.GetAllProductsAsync();
                 SelectedProduct = null;
             }
         }

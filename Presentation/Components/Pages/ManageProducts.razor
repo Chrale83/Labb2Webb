@@ -5,7 +5,7 @@
 @inject IDialogService DialogService
 @inject NavigationManager Navigation
 @page "/manageproducts"
-@inject Blazored.LocalStorage.ILocalStorageService LocalStorage
+
 
 
 @if (Products.Count() == 0)
@@ -76,61 +76,3 @@
         </RowTemplate>
     </MudTable>
 <MudText Class="text-bg-danger mt-2 border-black text-center">@message</MudText>
-
-
-
- @* <MudTable 
-    T="ProductFrontDto" 
-    Items="@SearchedProducts" 
-    Hover="true" 
-    Breakpoint="Breakpoint.Sm" 
-    @ref="mudTable"
-    RowClass="cursor-pointer" 
-    @bind-SelectedItem="SelectedProduct">
-      
-    <HeaderContent>
-        <MudTh>Name</MudTh>
-        <MudTh>Price</MudTh>
-        <MudTh>Category</MudTh>
-        <MudTh>In stock</MudTh>
-
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Name">@context.Name</MudTd>
-        <MudTd DataLabel="Price">@context.Price kr</MudTd>
-        <MudTd DataLabel="Category">
-            @Categories.Where(c => c.Id == context.CategoryId).Select(c => c.Name).FirstOrDefault()</MudTd>
-        <MudTd DataLabel="Status">@if (context.Status)
-            {
-                <span>In stock</span>
-            }
-            else {
-                <span>Not in stock</span>
-            }
-        </MudTd>
-        
-    </RowTemplate>
-</MudTable> Listan med alla produkter *@
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
