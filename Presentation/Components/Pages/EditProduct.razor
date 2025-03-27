@@ -5,14 +5,16 @@
 {
 	
 
-<h3>Edit Product</h3>
+<h3>Editera produkt</h3>
 
+@if(!isProductUpdated)
+{
 <EditForm Model="SelectedProduct" 
 	
 Enhance
 method="put"
 FormName="EditProduct"
-OnValidSubmit="@HandleValidSubmit">
+OnValidSubmit="@UpdateProduct">
 
 <DataAnnotationsValidator />
 <ValidationSummary></ValidationSummary>
@@ -77,5 +79,13 @@ OnValidSubmit="@HandleValidSubmit">
 
 
 </EditForm>
+
+	}
+	else{
+
+		<div>
+			<label class="mt-2 alert @statusClass">@message</label>
+		</div>
+	}
 }
-else{<h3>HÄR SKA DU INTE VARA IDA!!!!</h3>}
+else{<h3>Hoppsan nu har du kommit fel</h3>}

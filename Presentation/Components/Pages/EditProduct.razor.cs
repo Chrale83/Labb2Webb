@@ -2,12 +2,16 @@
 using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
 using Presentation.Extensions;
+using Presentation.Interfaces;
 using Presentation.States;
 
 namespace Presentation.Components.Pages
 {
     public partial class EditProduct
     {
+        [Inject]
+        public IProductService ProductService { get; set; }
+
         [Inject]
         public AppState AppState { get; set; }
 
@@ -29,40 +33,31 @@ namespace Presentation.Components.Pages
 
         protected override void OnInitialized()
         {
-            _httpClient = HttpClientFactory.CreateClient("MyAPI");
             Categories = AppState.Categories;
             SelectedProduct = AppState.SelectedProduct;
         }
 
-        protected override async Task OnAfterRenderAsync(bool firstRender)
-        {
-            if (firstRender && AppState.UserInfo.Role == "ADMIN")
-            {
-                await _httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
-            }
-        }
+        protected override async Task OnAfterRenderAsync(bool firstRender) { }
 
-        private async Task HandleValidSubmit()
+        private async Task UpdateProduct()
         {
             var editedProduct = new ProductUpdateDto(SelectedProduct);
-            //var updatedProduct = OriginalProduct.GetUpdatedFields(editedProduct);
+            var productId = SelectedProduct.Id;
 
             if (SelectedProduct != null)
             {
-                var response = await _httpClient.PutAsJsonAsync(
-                    $"/api/products/{SelectedProduct.Id}",
-                    editedProduct
-                );
+                var response = await ProductService.UpdateProductAsync(productId, editedProduct);
 
-                if (response.IsSuccessStatusCode)
+                if (response)
                 {
-                    message = $"{SelectedProduct.Name} was updated in database";
+                    message = $"{SelectedProduct.Name} är uppdaterad i databasen";
                     statusClass = "alert-success";
                     isProductUpdated = true;
                 }
                 else
                 {
-                    message = $"{SelectedProduct.Name} was not updated";
+                    message =
+                        $"{SelectedProduct.Name} någpt gick fel vid uppdatering vid databasen";
                     statusClass = "alert-warning";
                     isProductUpdated = false;
                 }

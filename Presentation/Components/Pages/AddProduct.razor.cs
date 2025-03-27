@@ -1,10 +1,6 @@
-﻿using System.Net.Http;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
-using Presentation.Extensions;
 using Presentation.Interfaces;
-using Presentation.Models;
 using Presentation.States;
 
 namespace Presentation.Components.Pages

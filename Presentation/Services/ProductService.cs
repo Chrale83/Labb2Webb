@@ -52,10 +52,18 @@ namespace Presentation.Services
             );
         }
 
-        public async Task UpdateProductAsync(int id, ProductUpdateDto productUpdateDto)
+        public async Task<bool> UpdateProductAsync(int id, ProductUpdateDto productUpdateDto)
         {
             await httpClient.SetTokenToHttpClientFromLStorage(localStorage);
-            await httpClient.PutAsJsonAsync($"{uri}/{id}", productUpdateDto);
+            var response = await httpClient.PutAsJsonAsync($"{uri}/{id}", productUpdateDto);
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
