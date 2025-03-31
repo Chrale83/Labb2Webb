@@ -12,7 +12,7 @@ namespace Presentation.Components.Pages
         public ICustomerService? CustomerService { get; set; }
 
         [Inject]
-        public AppState? AppState { get; set; }
+        public SharedState? AppState { get; set; }
 
         public List<CustomerProfileModel>? CustomerProfiles { get; set; } = new();
         public CustomerProfileModel? SelectedCustomer { get; set; } = new();

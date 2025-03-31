@@ -14,7 +14,7 @@ namespace Presentation.Components.Pages
         public IProductService? ProductService { get; set; }
 
         [Inject]
-        public AppState? appState { get; set; }
+        public SharedState? appState { get; set; }
 
         private MudTable<ProductDTO>? mudTable;
         private List<ProductDTO> Products { get; set; } = new List<ProductDTO>();

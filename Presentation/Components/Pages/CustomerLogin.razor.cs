@@ -15,7 +15,7 @@ namespace Presentation.Components.Pages
         private HttpClient? _httpClient;
 
         [Inject]
-        public AppState AppState { get; set; }
+        public SharedState AppState { get; set; }
 
         [Parameter]
         public CustomerLoginDTO LoginCustomer { get; set; }

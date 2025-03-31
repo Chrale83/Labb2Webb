@@ -12,7 +12,7 @@ namespace Presentation.Components.Pages
         public HttpClient? httpClient { get; set; }
 
         [Inject]
-        public AppState? appState { get; set; }
+        public SharedState? appState { get; set; }
 
         [Inject]
         public ShoppingCartService? CartService { get; set; }

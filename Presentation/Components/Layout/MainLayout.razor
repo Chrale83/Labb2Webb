@@ -65,7 +65,7 @@
     [Inject]
     public NavigationManager? Navigation { get; set; }
     [Inject]
-    public  AppState? appState { get; set; }
+    public  SharedState? appState { get; set; }
     [Inject]
     public IHttpClientFactory HttpClientFactory { get; set; } = default!;
     private HttpClient? _httpClient;

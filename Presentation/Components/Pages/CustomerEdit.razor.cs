@@ -8,7 +8,7 @@ namespace Presentation.Components.Pages
     public partial class CustomerEdit
     {
         [Inject]
-        public AppState? AppState { get; set; }
+        public SharedState? AppState { get; set; }
 
         [Inject]
         public ICustomerService? CustomerService { get; set; }

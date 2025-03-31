@@ -14,7 +14,7 @@ builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<ShoppingCartService>();
-builder.Services.AddSingleton<AppState>();
+builder.Services.AddSingleton<SharedState>();
 builder.Services.AddMudServices();
 builder.Services.AddHttpClient(
     "MyAPI",
@@ -35,7 +35,7 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider; //    scope.ServiceProvider används för att hämta tjänster inom det nya scopet.
-    var appState = services.GetRequiredService<AppState>(); //services.GetRequiredService<AppState>() hämtar AppState-instansen från DI.
+    var appState = services.GetRequiredService<SharedState>(); //services.GetRequiredService<AppState>() hämtar AppState-instansen från DI.
     var httpClientFactory = services.GetRequiredService<IHttpClientFactory>();
     var httpClient = httpClientFactory.CreateClient("MyAPI");
 

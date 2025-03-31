@@ -11,7 +11,7 @@ namespace Presentation.Components.Pages
         public IProductService ProductService { get; set; }
 
         [Inject]
-        public AppState AppState { get; set; }
+        public SharedState AppState { get; set; }
 
         [SupplyParameterFromForm]
         public ProductDTO? SelectedProduct { get; set; }

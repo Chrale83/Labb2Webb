@@ -34,7 +34,7 @@ namespace Presentation.Extensions
 
         public static async Task SaveLoginDataToState(
             this CustomerLoginResponseDTO loginData,
-            AppState appState
+            SharedState appState
         )
         {
             appState.IsLoggedIn = true;
@@ -65,7 +65,7 @@ namespace Presentation.Extensions
             }
         }
 
-        public static void ClearUserData(this AppState data)
+        public static void ClearUserData(this SharedState data)
         {
             data.UserInfo = new();
         }

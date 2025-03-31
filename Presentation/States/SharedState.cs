@@ -3,7 +3,7 @@ using Presentation.Models;
 
 namespace Presentation.States
 {
-    public class AppState
+    public class SharedState
     {
         public List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
         public UserInfo UserInfo { get; set; } = new();

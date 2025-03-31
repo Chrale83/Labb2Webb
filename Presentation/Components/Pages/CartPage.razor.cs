@@ -22,7 +22,7 @@ namespace Presentation.Components.Pages
         public IHttpClientFactory? httpClientFactory { get; set; }
 
         [Inject]
-        public AppState? AppState { get; set; }
+        public SharedState? AppState { get; set; }
         public HttpClient? httpClient { get; set; }
         public MudTable<ShoppingCartItemModel>? mudTable { get; set; }
         public IEnumerable<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();

@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using States
-@inject AppState appState
+@inject SharedState appState
 
 <PageTitle>Home</PageTitle>
 
@@ -12,5 +12,5 @@
 
 @if (appState.IsLoggedIn)
 {
-	<h3>Hej @appState.UserInfo.FirstName</h3>
+	<h3>Välkommen @appState.UserInfo.FirstName</h3>
 }
