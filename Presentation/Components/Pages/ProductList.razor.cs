@@ -9,7 +9,7 @@ namespace Presentation.Components.Pages
     public partial class ProductList
     {
         [Inject]
-        public IProductService ProductService { get; set; }
+        public IProductService? ProductService { get; set; }
 
         [Inject]
         public SharedState? appState { get; set; }

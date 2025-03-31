@@ -77,6 +77,8 @@ namespace Presentation.Components.Pages
                 statusClass = "alert-success";
                 message = "Produkten är tillagd i listan";
                 isOrderSent = true;
+                CartService.ClearCart();
+                NavigationManager.NavigateTo("confirmationpage");
             }
             else
             {

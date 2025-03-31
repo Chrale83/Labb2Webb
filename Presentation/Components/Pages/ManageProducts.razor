@@ -25,8 +25,8 @@
 @if (SelectedProduct != null)
 {
     <div class="mb-3 ms-1">
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="EditProduct">Edit product</MudButton>
-        <MudButton Variant="Variant.Outlined" Class="ms-3" @onclick="OpenConfirmDialogDelete" Color="Color.Secondary">Delete product</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" @onclick="EditProduct">Editera produkt</MudButton>
+        <MudButton Variant="Variant.Outlined" Class="ms-3" @onclick="OpenConfirmDialogDelete" Color="Color.Secondary">Ta bort produkt</MudButton>
         <MudText Typo="Typo.h5" class="mt-2">Vald produkt: <strong>@SelectedProduct.Name</strong></MudText>
 
     </div>
@@ -50,10 +50,10 @@
               @bind-SelectedItem="SelectedProduct">
 
         <HeaderContent>
-            <MudTh>Name</MudTh>
-            <MudTh>Price</MudTh>
-            <MudTh>Category</MudTh>
-            <MudTh>In stock</MudTh>
+            <MudTh>Namn</MudTh>
+            <MudTh>Pris</MudTh>
+            <MudTh>Kategori</MudTh>
+            <MudTh>I lager</MudTh>
 
         </HeaderContent>
         <RowTemplate>
@@ -65,7 +65,7 @@
             <MudTd DataLabel="Status">
                 @if (context.Status)
                 {
-                    <span>In stock</span>
+                    <span>I lager</span>
                 }
                 else
                 {

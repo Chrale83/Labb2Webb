@@ -1,7 +1,9 @@
 ﻿@page "/registercustomer"
 @rendermode InteractiveServer
 
-
+@if (!IsCreated)
+{
+    
 <h3>Skapa konto</h3>
 
 <EditForm Model="Customer"
@@ -111,3 +113,4 @@ FormName="RegisterNewCustomer"
 
 
 </EditForm>
+}

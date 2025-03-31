@@ -1,19 +1,24 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Presentation.DTOs;
+using Presentation.Interfaces;
 using Presentation.Models;
 
 namespace Presentation.Components.Pages
 {
     public partial class RegisterCustomer
     {
+        //[Inject]
+        //public IHttpClientFactory httpClientFactory { get; set; } = default!;
+        //private HttpClient? _httpClient;
+
         [Inject]
-        public IHttpClientFactory httpClientFactory { get; set; } = default!;
-        private HttpClient? _httpClient;
+        public IAuthService? AuthService { get; set; }
 
         [SupplyParameterFromForm]
-        public NewCustomer Customer { get; set; }
+        public NewCustomer? Customer { get; set; } = new();
 
         public CustomerDTO? CustomerDTO { get; set; }
+        private bool IsCreated = false;
 
         private async Task RegisterCustomerSubmit()
         {
@@ -29,13 +34,16 @@ namespace Presentation.Components.Pages
                 StreetNumber = Customer.StreetNumber,
             };
 
-            await _httpClient.PostAsJsonAsync("/api/auth/register", CustomerDTO);
+            await AuthService.RegisterCustomerAsync(CustomerDTO);
+
+            //await _httpClient.PostAsJsonAsync("/api/auth/register", CustomerDTO);
+            IsCreated = true;
         }
 
-        protected override void OnInitialized()
-        {
-            Customer ??= new();
-            _httpClient = httpClientFactory.CreateClient("MyAPI");
-        }
+        //protected override void OnInitialized()
+        //{
+        //    //Customer ??= new();
+        //    //_httpClient = httpClientFactory.CreateClient("MyAPI");
+        //}
     }
 }
