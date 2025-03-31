@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Dtos;
+using Domain.Entities;
 using Domain.Interfaces;
 using Presentation.DTOs;
 
@@ -32,6 +33,34 @@ namespace Infrastructure.Services
             };
 
             await _orderRepository.CreateOrder(order, customerId);
+        }
+
+        public async Task<List<OrderForCustomerDto>> GetOrdersForCustomer(int customerId)
+        {
+            var orderEntity = await _orderRepository.GetOrdersForCustomer(customerId);
+
+            var customerOrders = new List<OrderForCustomerDto>();
+
+            customerOrders = orderEntity
+                .Select(order => new OrderForCustomerDto
+                {
+                    CustomerFirstName = order.Customer.FirstName,
+                    CustomerLastName = order.Customer.LastName,
+                    OrderId = order.Id,
+                    TotalPrice = order.TotalPrice,
+                    PurchaseDate = order.PurchaseDate,
+                    Products = order
+                        .OrderProducts.Select(op => new OrderProductForCustomerDto
+                        {
+                            CategoryName = op.Product.Category.Name,
+                            ProductName = op.Product.Name,
+                            ProductPrice = op.Product.Price,
+                            Quantity = op.Quantity,
+                        })
+                        .ToList(),
+                })
+                .ToList();
+            return customerOrders;
         }
     }
 }

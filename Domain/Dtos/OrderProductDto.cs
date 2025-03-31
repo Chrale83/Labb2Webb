@@ -1,6 +1,6 @@
 ﻿namespace Presentation.DTOs
 {
-    public class ProductOrderDTO
+    public class OrderProductDto
     {
         public int ProductId { get; set; }
 

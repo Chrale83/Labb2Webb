@@ -29,5 +29,16 @@ namespace API.Controllers
 
             return Created();
         }
+
+        [HttpGet("id")]
+        public async Task<ActionResult<List<OrderForCustomerDto>>> GetCustomerOrders(int customerId)
+        {
+            var customerOrders = await _orderService.GetOrdersForCustomer(customerId);
+            if (customerOrders != null)
+            {
+                return Ok(customerOrders);
+            }
+            return NotFound();
+        }
     }
 }

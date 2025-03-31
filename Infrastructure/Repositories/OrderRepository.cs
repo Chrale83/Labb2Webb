@@ -20,5 +20,19 @@ namespace Infrastructure.Repositories
             context.Orders.Add(order);
             await context.SaveChangesAsync();
         }
+
+        public async Task<List<Order>> GetOrdersForCustomer(int customerId)
+        {
+            //var order = await context.Orders.Where(o => o.CustomerId == customerId).Include(op => op.OrderProducts).ThenInclude(a => a.)
+            var orders = await context
+                .Orders.Where(o => o.CustomerId == customerId)
+                .Include(b => b.OrderProducts)
+                .ThenInclude(op => op.Product)
+                .ThenInclude(p => p.Category)
+                .Include(o => o.Customer)
+                .ToListAsync();
+
+            return orders;
+        }
     }
 }
