@@ -53,5 +53,11 @@ namespace Presentation.Components.Pages
             message = string.Empty;
             StateHasChanged();
         }
+
+        private void GetOrderHistory()
+        {
+            AppState.SelectedCustomer = (int)AppState.UserInfo.UserId;
+            Navigation.NavigateTo("/customerorderdetails");
+        }
     }
 }

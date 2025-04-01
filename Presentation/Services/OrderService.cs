@@ -37,9 +37,15 @@ namespace Presentation.Services
 
         public async Task<List<OrderForCustomerDTO>> GetOrdersForCustomer(int customerId)
         {
-            return await httpClient.GetFromJsonAsync<List<OrderForCustomerDTO>>(
+            var response = await httpClient.GetFromJsonAsync<List<OrderForCustomerDTO>>(
                 $"{orderUri}/{customerId}"
             );
+
+            if (response == null)
+            {
+                return new List<OrderForCustomerDTO>();
+            }
+            return response;
         }
     }
 }

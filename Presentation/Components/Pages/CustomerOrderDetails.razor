@@ -1,7 +1,16 @@
 ﻿@page "/customerorderdetails"
 @rendermode InteractiveServer
+@using MudBlazor
 
-<h3>Order detaljer</h3>
+@if (CustomerOrders == null || !CustomerOrders.Any())
+{
+    <h3>Kunden har inte gjort några beställningar</h3>
+}
+else{
+
+
+
+<h3 class="ms-5">Order detaljer</h3>
 
 <div class="container">
     @foreach (var order in CustomerOrders)
@@ -33,11 +42,21 @@
                             {
                                 <tr>
                                     <td>@product.ProductName</td>
-                                    <td>@product.ProductPrice kr</td>
+                                        <td>@(product.ProductPrice * product.Quantity) kr</td>
                                     <td>@product.Quantity</td>
                                 </tr>
                             }
                         </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2" class="text-left"><strong>Total summa: @order.TotalPrice kr</strong></td>
+                                    <td>
+                                        <strong>
+                                            
+                                        </strong>
+                                    </td>
+                                </tr>
+                            </tfoot>
                     </table>
                 </div>
             </div>
@@ -46,7 +65,7 @@
 </div>
 
 
-
+}
 
 
 

@@ -39,7 +39,7 @@ namespace API.Controllers
             {
                 return Ok(customerOrders);
             }
-            return NotFound();
+            return Ok(new List<OrderForCustomerDto>());
         }
     }
 }
