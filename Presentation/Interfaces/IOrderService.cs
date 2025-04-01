@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Presentation.DTOs;
+﻿using Presentation.DTOs;
 
 namespace Presentation.Interfaces
 {
@@ -7,6 +6,6 @@ namespace Presentation.Interfaces
     {
         Task<bool> CreateOrder(OrderDTO newOrder);
 
-        Task<OrderForCustomerDTO> GetOrdersForCustomer(int customerId);
+        Task<List<OrderForCustomerDTO>> GetOrdersForCustomer(int customerId);
     }
 }

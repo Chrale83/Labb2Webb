@@ -16,19 +16,12 @@ namespace Presentation.Components.Pages
         [Inject]
         public IOrderService OrderService { get; set; }
 
-        //[Inject]
-        //public ILocalStorageService? LocalStorage { get; set; }
-
         [Inject]
         public ShoppingCartService? CartService { get; set; }
-
-        //[Inject]
-        //public IHttpClientFactory? httpClientFactory { get; set; }
 
         [Inject]
         public SharedState? AppState { get; set; }
 
-        //public HttpClient? httpClient { get; set; }
         public MudTable<ShoppingCartItemModel>? mudTable { get; set; }
         public IEnumerable<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
         public ShoppingCartItemModel? SelectedProduct { get; set; }
@@ -39,18 +32,9 @@ namespace Presentation.Components.Pages
 
         protected override void OnInitialized()
         {
-            //httpClient = httpClientFactory.CreateClient("MyAPI");
             Categories = AppState.Categories;
             CalcTotalSum();
         }
-
-        //protected override async Task OnAfterRenderAsync(bool firstRender)
-        //{
-        //    if (firstRender)
-        //    {
-        //        await httpClient.SetTokenToHttpClientFromLStorage(LocalStorage);
-        //    }
-        //}
 
         private void RemoveFromCart()
         {

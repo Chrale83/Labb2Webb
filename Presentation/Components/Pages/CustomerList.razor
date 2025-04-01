@@ -1,4 +1,4 @@
-﻿
+﻿@using Presentation.DTOs
 @using Presentation.Models
 @using MudBlazor
 @rendermode InteractiveServer
@@ -6,39 +6,109 @@
 @inject NavigationManager Navigation
 @page "/customerlist"
 
-<h3>CustomerList</h3>
+<h3>Lista av kunder</h3>
 <div class="text-left mb-2 bg-blue-100">
-    <input class="form-control w-25"  @oninput="SearchForCustomersName"
-            placeholder="Sök efter namn" />
+    <input class="form-control w-25"  
+    @oninput="SearchForCustomersName"
+    placeholder="Sök efter namn"
+    />
 </div>
 
 <MudTable T="CustomerProfileModel"
-          Items="@CustomerProfiles"
-          Hover="true"
-          Breakpoint="Breakpoint.Sm"
-          @ref="mudTable"
-          RowClass="cursor-pointer"
-          @bind-SelectedItem="SelectedCustomer">
+Items="@CustomerProfiles"
+Hover="true"
+Breakpoint="Breakpoint.Sm"
+@ref="mudTable"
+RowClass="cursor-pointer"
+@bind-SelectedItem="SelectedCustomer">
 
     <HeaderContent>
         <MudTh>Namn</MudTh>
         <MudTh>Email</MudTh>
         <MudTh>Telefon nummer</MudTh>
         <MudTh>Adress</MudTh>
-        
-        
-        
-
     </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="Name">@context.FullName</MudTd>
-        <MudTd DataLabel="Price">@context.Email </MudTd>
-        <MudTd DataLabel="Price">@context.PhoneNumber </MudTd>
-        <MudTd DataLabel="Price">@context.FullAdress </MudTd>
-        
+
+    <RowTemplate Context="customer">
+        <MudTd DataLabel="Name">@customer.FullName</MudTd>
+        <MudTd DataLabel="Email">@customer.Email</MudTd>
+        <MudTd DataLabel="Telefon nummer">@customer.PhoneNumber</MudTd>
+        <MudTd DataLabel="Adress">@customer.FullAdress</MudTd>
+        <MudTd>
+            <MudButton Variant="Variant.Filled"
+            Color="Color.Primary"
+            OnClick="@(() => ShowOrders(customer))">
+                Visa Ordrar
+            </MudButton>
+            <MudButton Variant="Variant.Filled"
+            Color="Color.Secondary"
+            OnClick="@(() => DeleteCustomer(customer))">
+                Ta bort
+            </MudButton>
+        </MudTd>
+    </RowTemplate>
+
+    <ChildRowContent Context="customer">
+
+        @if (isSHowingOrders && customer == SelectedCustomer)
+        {
+            <MudTr>
+                <td colspan="5">
+                    <MudCard Elevation="0">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                <MudText Typo="Typo.body1">
+                                    Order detaljer för: <strong>@customer.FullName</strong>
+                                </MudText>
+                            </CardHeaderContent>
+                        </MudCardHeader>
+                        <MudCardContent Class="pa-0">
+                            <MudTable Items="@SelectedOrders" Context="order" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                <ColGroup>
+                                    <col />
+                                    <col />
+                                    <col style="width:200px;" />
+                                </ColGroup>
+                                <HeaderContent>
+                                    <MudTh>OrderId</MudTh>
+                                    <MudTh>Datum</MudTh>
+                                    <MudTh>Total pris</MudTh>
+                                </HeaderContent>
+                                <RowTemplate>
+                                    <MudTd DataLabel="OrderId">@order.OrderId</MudTd>
+                                    <MudTd DataLabel="Datum">@order.PurchaseDate.ToShortDateString()</MudTd>
+                                    <MudTd DataLabel="Total pris">@order.TotalPrice</MudTd>
+                                </RowTemplate>
+                                <ChildRowContent Context="order">
+                                    <MudTr>
+                                        <td colspan="3">
+                                            <MudTable Items="@order.Products" Context="product" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                                <HeaderContent>
+                                                    <MudTh>Produktnamn</MudTh>
+                                                    <MudTh>Pris</MudTh>
+                                                    <MudTh>Kategori</MudTh>
+                                                    <MudTh>Kvantitet</MudTh>
+                                                </HeaderContent>
+                                                <RowTemplate>
+                                                    <MudTd DataLabel="Produktnamn">@product.ProductName</MudTd>
+                                                    <MudTd DataLabel="Pris">@product.ProductPrice</MudTd>
+                                                    <MudTd DataLabel="Kategori">@product.CategoryName</MudTd>
+                                                    <MudTd DataLabel="Kvantitet">@product.Quantity</MudTd>
+                                                </RowTemplate>
+                                            </MudTable>
+                                        </td>
+                                    </MudTr>
+                                </ChildRowContent>
+                            </MudTable>
+                        </MudCardContent>
+                    </MudCard>
+                </td>
+            </MudTr>
+        }
+    </ChildRowContent>
+</MudTable>
+
         
         
 
-    </RowTemplate>
-</MudTable>
 @* <MudText Class="text-bg-danger mt-2 border-black text-center">@message</MudText> *@

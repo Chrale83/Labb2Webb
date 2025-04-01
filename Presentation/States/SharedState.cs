@@ -8,6 +8,7 @@ namespace Presentation.States
         public List<CategoryDTO> Categories { get; set; } = new List<CategoryDTO>();
         public UserInfo UserInfo { get; set; } = new();
         public ProductDTO? SelectedProduct { get; set; }
+        public int SelectedCustomer = 0;
         private bool _isLoggedin;
         public bool IsLoggedIn
         {

@@ -30,10 +30,11 @@ namespace API.Controllers
             return Created();
         }
 
-        [HttpGet("customerId")]
-        public async Task<ActionResult<List<OrderForCustomerDto>>> GetCustomerOrders(int customerId)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<ActionResult<List<OrderForCustomerDto>>> GetCustomerOrders(int id)
         {
-            var customerOrders = await _orderService.GetOrdersForCustomer(customerId);
+            var customerOrders = await _orderService.GetOrdersForCustomer(id);
             if (customerOrders != null && customerOrders.Any())
             {
                 return Ok(customerOrders);

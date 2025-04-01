@@ -34,5 +34,12 @@ namespace Presentation.Services
                 return false;
             }
         }
+
+        public async Task<List<OrderForCustomerDTO>> GetOrdersForCustomer(int customerId)
+        {
+            return await httpClient.GetFromJsonAsync<List<OrderForCustomerDTO>>(
+                $"{orderUri}/{customerId}"
+            );
+        }
     }
 }

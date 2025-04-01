@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
+using Presentation.DTOs;
 using Presentation.Interfaces;
 using Presentation.Models;
 using Presentation.States;
@@ -12,7 +13,11 @@ namespace Presentation.Components.Pages
         public ICustomerService? CustomerService { get; set; }
 
         [Inject]
+        public IOrderService? OrderService { get; set; }
+
+        [Inject]
         public SharedState? AppState { get; set; }
+        public List<OrderForCustomerDTO>? SelectedOrders { get; set; } = new();
 
         public List<CustomerProfileModel>? CustomerProfiles { get; set; } = new();
         public CustomerProfileModel? SelectedCustomer { get; set; } = new();
@@ -20,6 +25,7 @@ namespace Presentation.Components.Pages
         private MudTable<CustomerProfileModel>? mudTable;
         private string message = string.Empty;
         private CancellationTokenSource _cts;
+        private bool isSHowingOrders = false;
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
@@ -52,5 +58,17 @@ namespace Presentation.Components.Pages
             }
             StateHasChanged();
         }
+
+        private async void ShowOrders(CustomerProfileModel selectedCustomer)
+        {
+            //SelectedCustomer = selectedCustomer;
+            //SelectedOrders = await OrderService.GetOrdersForCustomer(SelectedCustomer.Id);
+            //isSHowingOrders = true;
+            //StateHasChanged();
+            AppState.SelectedCustomer = selectedCustomer.Id;
+            Navigation.NavigateTo("/customerorderdetails");
+        }
+
+        private void DeleteCustomer(CustomerProfileModel SelectedCustomer) { }
     }
 }
