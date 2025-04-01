@@ -30,11 +30,11 @@ namespace API.Controllers
             return Created();
         }
 
-        [HttpGet("id")]
+        [HttpGet("customerId")]
         public async Task<ActionResult<List<OrderForCustomerDto>>> GetCustomerOrders(int customerId)
         {
             var customerOrders = await _orderService.GetOrdersForCustomer(customerId);
-            if (customerOrders != null)
+            if (customerOrders != null && customerOrders.Any())
             {
                 return Ok(customerOrders);
             }
