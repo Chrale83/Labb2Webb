@@ -39,25 +39,25 @@ namespace API.Controllers
             return Ok(response);
         }
 
-        [Authorize]
-        [HttpGet]
-        public IActionResult AuthenticatedOnlyEndpoint()
-        {
-            return Ok("you are autentitcated");
-        }
+        //[Authorize]
+        //[HttpGet]
+        //public IActionResult AuthenticatedOnlyEndpoint()
+        //{
+        //    return Ok("you are autentitcated");
+        //}
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("admin-only")]
-        public IActionResult AdminOnlyEndpoint()
-        {
-            return Ok("Du har admin rättigheter");
-        }
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet("admin-only")]
+        //public IActionResult AdminOnlyEndpoint()
+        //{
+        //    return Ok("Du har admin rättigheter");
+        //}
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet("user-only")]
-        public IActionResult UserOnlyEndpoint()
-        {
-            return Ok("du har user rättigheter");
-        }
+        //[Authorize(Roles = "Admin")]
+        //[HttpGet("user-only")]
+        //public IActionResult UserOnlyEndpoint()
+        //{
+        //    return Ok("du har user rättigheter");
+        //}
     }
 }

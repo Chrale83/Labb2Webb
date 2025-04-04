@@ -11,5 +11,7 @@ namespace Presentation.Interfaces
             string customerSearchQuery,
             bool listHaveCustomers
         );
+
+        Task DeleteCustomer(int customerId);
     }
 }

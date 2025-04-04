@@ -70,8 +70,7 @@ namespace API.Controllers
 
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<ProductDto>>> SearchProductsAsync(
-            [FromQuery] string searchWord,
-            int number
+            [FromQuery] string searchWord
         )
         {
             var products = await _productService.SearchProductsAsync(searchWord);

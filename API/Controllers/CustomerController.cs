@@ -73,10 +73,11 @@ namespace API.Controllers
 
         [Authorize(Roles = "ADMIN")]
         [HttpDelete]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
-            var response = _customerService.DeleteCustomerAsync(id);
-            if (response.IsCompletedSuccessfully)
+            var response = await _customerService.DeleteCustomerAsync(id);
+            if (response)
             {
                 return Ok(response);
             }

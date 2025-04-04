@@ -34,6 +34,9 @@ RowClass="cursor-pointer"
         <MudTd DataLabel="Email">@customer.Email</MudTd>
         <MudTd DataLabel="Telefon nummer">@customer.PhoneNumber</MudTd>
         <MudTd DataLabel="Adress">@customer.FullAdress</MudTd>
+        @if (customer.Email != "admin@admin.se")
+        {
+            
         <MudTd>
             <MudButton Variant="Variant.Filled"
             Color="Color.Primary"
@@ -46,6 +49,7 @@ RowClass="cursor-pointer"
                 Ta bort
             </MudButton>
         </MudTd>
+        }
     </RowTemplate>
 
     <ChildRowContent Context="customer">

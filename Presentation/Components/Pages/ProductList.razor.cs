@@ -19,6 +19,10 @@ namespace Presentation.Components.Pages
         public List<ProductDTO> Products { get; set; } = new();
         public ProductDTO? SelectedProduct { get; set; }
         private MudTable<ProductDTO>? mudTable;
+        private CancellationTokenSource? cts;
+
+        [Parameter]
+        public string searchText { get; set; } = string.Empty;
 
         protected override async Task OnInitializedAsync()
         {
@@ -30,6 +34,26 @@ namespace Presentation.Components.Pages
         {
             appState.SelectedProduct = SelectedProduct;
             navigationManager.NavigateTo("/productdetail");
+        }
+
+        private async void SearchProducts(ChangeEventArgs input)
+        {
+            cts?.Cancel();
+            cts = new CancellationTokenSource();
+            try
+            {
+                await Task.Delay(600, cts.Token);
+                var productQuery = input.Value?.ToString();
+
+                var listHaveProducts = Products.Any();
+
+                Products = await ProductService.SearchProductAsync(productQuery, listHaveProducts);
+            }
+            catch (TaskCanceledException)
+            {
+                //Sökningen avbröts eller så skrev för snabbt
+            }
+            StateHasChanged();
         }
     }
 }

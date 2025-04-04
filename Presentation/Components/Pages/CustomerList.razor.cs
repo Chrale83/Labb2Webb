@@ -59,16 +59,17 @@ namespace Presentation.Components.Pages
             StateHasChanged();
         }
 
-        private async void ShowOrders(CustomerProfileModel selectedCustomer)
+        private void ShowOrders(CustomerProfileModel selectedCustomer)
         {
-            //SelectedCustomer = selectedCustomer;
-            //SelectedOrders = await OrderService.GetOrdersForCustomer(SelectedCustomer.Id);
-            //isSHowingOrders = true;
-            //StateHasChanged();
             AppState.SelectedCustomer = selectedCustomer.Id;
             Navigation.NavigateTo("/customerorderdetails");
         }
 
-        private void DeleteCustomer(CustomerProfileModel SelectedCustomer) { }
+        private async Task DeleteCustomer(CustomerProfileModel SelectedCustomer)
+        {
+            await CustomerService.DeleteCustomer(SelectedCustomer.Id);
+            CustomerProfiles = await CustomerService.GetAllCustomers();
+            StateHasChanged();
+        }
     }
 }

@@ -21,6 +21,11 @@ namespace Presentation.Services
             localStorage = localStorageService;
         }
 
+        public async Task DeleteCustomer(int customerId)
+        {
+            await httpClient.DeleteAsync($"{customerUri}/{customerId}");
+        }
+
         public async Task<List<CustomerProfileModel>> GetAllCustomers()
         {
             await httpClient.SetTokenToHttpClientFromLStorage(localStorage);
